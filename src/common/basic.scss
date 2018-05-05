@@ -1,0 +1,34 @@
+$main-color: #ff4f4f;
+$minor-color: #333333;
+$line-color: #eeeeee;
+$base-px: 75; //px
+
+@mixin flex-box {
+    display: flex;
+    display: -webkit-flex;
+}
+
+@mixin prefix($property, $value) {
+    -webkit-#{$property}: $value;
+    #{$property}: $value;
+}
+
+@mixin font-dpr($font-size) {
+    font-size: $font-size;
+    [data-dpr="2"] & {
+        font-size: $font-size * 2;
+    }
+    [data-dpr="3"] & {
+        font-size: $font-size * 3;
+    }
+}
+
+@function px2rem($px) {
+    @return ($px / $base-px) + rem;
+}
+
+%hr {
+    background-color: $line-color;
+    height: 1px;
+    border: none;
+}
