@@ -1,25 +1,39 @@
 <template>
   <div id="app">
-    <div class="app-header">
-      <div class="app-search">
-        <Icon :size="30" name="ios-alarm" color="blue"/>
-      </div>
+    <div class="app-content">
+      <router-view/>
     </div>
-    <router-view/>
-    <div class="app-tabbar">123</div>
+    <div class="app-tabbar">
+      <div :class="['tab-item', activeTab === 'home' ? 'active' : '']" @click="changeTab('home')">home</div>
+      <div :class="['tab-item', activeTab === 'top250' ? 'active' : '']" @click="changeTab('top250')">top250</div>
+      <div :class="['tab-item', activeTab === 'wordmouth' ? 'active' : '']" @click="changeTab('wordmouth')">口碑榜</div>
+      <div :class="['tab-item', activeTab === 'na' ? 'active' : '']" @click="changeTab('na')">北美票房榜</div>
+      <div :class="['tab-item', activeTab === 'new' ? 'active' : '']" @click="changeTab('new')">新片榜</div>
+    </div>
   </div>
 </template>
 
 <script>
 import * as types from "@/vuex/types";
-import Icon from "@/common/ui-components/Icon";
 export default {
   name: 'App',
-  components: {
-    Icon
+  data() {
+    return {
+      activeTab: 'home'
+    }
+  },
+  methods: {
+    changeTab(name) {
+      this.activeTab = name;
+      const path = name === 'home' ? '/home' : '/list/' + name;
+      this.$router.push({
+        path
+      })
+    }
   },
   mounted() {
-   
+    console.log(this.$route);
+
   }
 }
 </script>
@@ -31,17 +45,8 @@ export default {
   src: url("./fonts/Ionicons.ttf");
   font-style: italic;
 }
-.app-header {
-  height: px2rem(90);
-  background-color: $main-color;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  .app-search {
-    width: 50vw;
-    height: 60%;
-    background-color: white;
-  }
+.app-content {
+  padding: 0 0 px2rem(120) 0;
 }
 .app-tabbar {
   position: fixed;
@@ -49,5 +54,15 @@ export default {
   background-color: #eeeeee;
   width: 100vw;
   height: px2rem(100);
+  display: flex;
+  .tab-item {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+  }
+  .active {
+    color: #2E963D;
+  }
 }
 </style>

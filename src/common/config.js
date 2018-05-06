@@ -5,3 +5,11 @@ export const SERVER_BASE = '/api/'/*开发环境跨域，使用proxy代理，位
 export const HOT_MOVIE = 'v2/movie/in_theaters';
 
 export const SOON_MOVIE = 'v2/movie/coming_soon';
+
+export const TOP250_LIST = 'v2/movie/top250';
+
+export const WORD_MOUTH_LIST = 'v2/movie/weekly';
+
+export const NORTH_AMERICA_LIST = 'v2/movie/us_box';
+
+export const NEW_LIST = 'v2/movie/new_movies';

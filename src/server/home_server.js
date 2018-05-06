@@ -6,18 +6,18 @@ import {data} from '@/common/testData';
 
 export const requestHotMovie = (isLoading, isRefreshing) => {
     store.commit({type: types.REQUEST_HOT, isLoading, isRefreshing});
-    //getDataByServer(urls.SERVER_BASE + urls.HOT_MOVIE, null).then(res => {
-        store.commit({type: types.GET_HOT, hotData: data});
-    //})
+    getDataByServer(urls.SERVER_BASE + urls.HOT_MOVIE, null).then(res => {
+        store.commit({type: types.GET_HOT, hotData: res});
+    })
 }
 
 export const requestSoonMovie = (isLoading, isRefreshing, successBK, errorBK) => {
     store.commit({type: types.REQUEST_SOON, isLoading, isRefreshing});
     console.log(urls.SERVER_BASE + urls.SOON_MOVIE)
-    //getDataByServer(urls.SERVER_BASE + urls.SOON_MOVIE, null).then(res => {
-        store.commit({type: types.GET_SOON, soonData: data});
-    //})
-    // .catch(e => {
-    //     errorBK && errorBK(e);
-    // })
+    getDataByServer(urls.SERVER_BASE + urls.SOON_MOVIE, null).then(res => {
+        store.commit({type: types.GET_SOON, soonData: res});
+    })
+    .catch(e => {
+        errorBK && errorBK(e);
+    })
 }

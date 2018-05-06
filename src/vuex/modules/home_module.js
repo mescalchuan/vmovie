@@ -3,7 +3,7 @@ import {homeAction} from '../actions';
 
 const state = {
     name: 'qinchuan',
-    isLoading: true,
+    hIsLoading: true,
     isRefreshing: false,
     sIsLoading: true,
     carouselList: [],

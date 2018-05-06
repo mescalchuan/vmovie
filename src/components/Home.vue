@@ -1,7 +1,12 @@
 <template>
     <div class="home-con">
-        <Loading :isShow="isLoading"/>
-        <div v-if="!isLoading">
+        <Loading :isShow="hIsLoading || sIsLoading"/>
+        <div v-if="!hIsLoading && !sIsLoading">
+            <div class="app-header">
+                <div class="app-search">
+                    <Icon :size="30" name="ios-alarm" color="blue"/>
+                </div>
+            </div>
             <swiper :options="swiperOption" ref="mySwiper">
             <!-- slides -->
                 <!-- <swiper-slide>
@@ -34,18 +39,8 @@
             {{name}}
             <button @click="changeName">changeName</button>
             <button @click="requestHotMovie">request</button>
-            <div class="">
-                <div class="movie-list">
-                    <div class="list-con" v-for="(item, index) in soonList" :key="index">
-                        <img :src="item.images.medium" alt="movie.jpg">
-                        <div class="list-bottom">
-                            <p class="">{{item.title}}</p>
-                            <Star :size="15" :goodNum="item.rating.average/2"/> <span style="margin:0.04rem;color:#FFD716">{{item.rating.average.toFixed(1)}}</span>
-                        </div>
-                    </div>
-                    <div class="list-con" v-for="(item, index) in soonListLeft" :key="index"></div>
-                </div>
-            </div>
+            <home-list title="正在热映" :list="hotList" :listLeft="hotListLeft"/>
+            <home-list title="即将上映" :list="soonList" :listLeft="soonListLeft"/>
         </div>
     </div>
 </template>
@@ -56,8 +51,14 @@ import {mapState, mapMutations, mapActions} from 'vuex';
 import * as server from '@/server/home_server';
 import Loading from '@/common/ui-components/Loading';
 import Star from '@/common/ui-components/Star';
+import HomeList from '@/common/ui-components/HomeList';
 import 'swiper/dist/css/swiper.css';
 
+const listLeft = (list) => {
+    const lastColCount = list.length % 3;
+    const additionCount = lastColCount == 0 ? 0 : 3 - lastColCount;
+    return new Array(additionCount);
+}
 export default {
     name: 'Home',
     data() {
@@ -73,13 +74,17 @@ export default {
     },
     computed: {
         soonListLeft() {
-            const lastColCount = this.soonList.length % 3;
-            const additionCount = lastColCount == 0 ? 0 : 3 - lastColCount;
-            return new Array(additionCount);
+            // const lastColCount = this.soonList.length % 3;
+            // const additionCount = lastColCount == 0 ? 0 : 3 - lastColCount;
+            // return new Array(additionCount);
+            return listLeft(this.soonList);
+        },
+        hotListLeft() {
+            return listLeft(this.hotList);
         },
         ...mapState({
             name: state => state.home.name,
-            isLoading: state => state.home.isLoading,
+            hIsLoading: state => state.home.hIsLoading,
             carouselList: state => state.home.carouselList,
             hotList: state => state.home.hotList,
             soonList: state => state.home.soonList
@@ -115,7 +120,8 @@ export default {
         swiper,
         swiperSlide,
         Loading,
-        Star
+        Star,
+        HomeList
     }
 }
 </script>
@@ -123,11 +129,25 @@ export default {
 <style lang='scss'>
 @import '../common/basic';
 .home-con {
+    .app-header {
+        height: px2rem(90);
+        background-color: $main-color;
+        position: fixed;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 2;
+        width: 100vw;
+        .app-search {
+            width: 50vw;
+            height: 60%;
+            background-color: white;
+        }
+    }
     .carousel-con {
         width: 95vw;
         box-sizing: border-box;
-        margin: px2rem(20) auto;
-        margin-bottom: 0;
+        margin: px2rem(110) auto 0 auto;
         //height: px2rem(400);
         border-radius: px2rem(15);
         background-color: #2E963D;
@@ -188,47 +208,16 @@ export default {
         //text-align: right;
         position: static;
     }
-    .movie-list {
-        display: flex;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        margin: 0 px2rem(20);
-        .list-con {
-            width: 30vw;
-            height: px2rem(315);
-            margin-top: px2rem(20);
-            position: relative;
-            img {
-                width: 100%;
-                height: 100%;
-            }
-            .list-bottom {
-                position: absolute;
-                bottom: 0;
-                width: 100%;
-                background-color: #2E963D;
-                padding: px2rem(10) 0;
-                text-align: center;
-                p {
-                    color: white;
-                    text-overflow:ellipsis;
-                    overflow: hidden;
-                    white-space: nowrap;
-                    @include font-dpr(13px);
-                }
-            }
-        }
-    }
     // @media screen and (max-width: 320px) and (min-resolution : 2dppx) {
     //     .movie-title {
     //         @include font-dpr(15px);
     //     }  
     // }
-    @media screen and (min-width: 1536px) {
-        .list-con {
-            width: 20vw !important;
-        }
-    }
+    // @media screen and (min-width: 1536px) {
+    //     .list-con {
+    //         width: 20vw !important;
+    //     }
+    // }
 }
 </style>
 
