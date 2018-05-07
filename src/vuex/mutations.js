@@ -44,6 +44,44 @@ export const movieListMutation = {
     },
     [types.GET_LIST_BY_TYPE](state, {listData}) {
         state.movieList = listData.subjects;
+        console.log(listData.subjects);
+        state.isLoading = false;
+    }
+}
+
+export const wordMouthMutation = {
+    [types.REQUEST_WORD_MOUTH_LIST](state, {isLoading}) {
+        console.log('get')
+        state.isLoading = isLoading;
+    },
+    [types.GET_WORD_MOUTH_LIST](state, {listData}) {
+        console.log(listData)
+        state.list = listData.subjects;
+        console.log(listData.subjects);
+        state.isLoading = false;
+    }
+}
+
+export const NAMutation = {
+    [types.REQUEST_NA_LIST](state, {isLoading}) {
+        console.log('get')
+        state.isLoading = isLoading;
+    },
+    [types.GET_NA_LIST](state, {listData}) {
+        console.log(listData)
+        state.list = listData.subjects;
+        console.log(listData.subjects);
+        state.isLoading = false;
+    }
+}
+
+export const movieDetailMutation = {
+    [types.REQUEST_MOVIE_DETAIL](state) {
+        state.isLoading = true;
+    },
+    [types.GET_MOVIE_DETAIL](state, {detail}) {
+        console.log(detail);
+        state.detail = detail;
         state.isLoading = false;
     }
 }

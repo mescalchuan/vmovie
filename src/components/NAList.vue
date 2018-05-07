@@ -1,23 +1,23 @@
 <template>
     <div style="overflow:hidden">
-        <Header :title="getListTitle"/>
+        <Header title="北美票房榜"/>
         <Loading :isShow="isLoading"/>
         <div v-if="!isLoading" class="movie-list">
-            <div class="list-con" v-for="(item, index) in movieList" :key="index">
-                <img :src="item.images.medium" alt="carousel.jpg">
+            <div class="list-con" v-for="(item, index) in list" :key="index">
+                <img :src="item.subject.images.medium" alt="carousel.jpg">
                 <div class="movie-info">
-                    <p class="movie-title">{{item.title}}</p>
+                    <p class="movie-title">{{item.subject.title}}</p>
                     <span class="movie-actor">
                         导演:
-                        <span class="movie-director-name">{{item.directors[0].name}}</span>
+                        <span class="movie-director-name">{{item.subject.directors[0].name}}</span>
                     </span>
                     <span class="movie-actor">
                         主演:
-                        <span v-for="(actor, aIndex) in item.casts" :key="aIndex">{{actor.name}} </span>
+                        <span v-for="(actor, aIndex) in item.subject.casts" :key="aIndex">{{actor.name}} </span>
                     </span>
-                    <p class="movie-actor">{{item.collect_count}} 人看过</p>
+                    <p class="movie-actor">{{item.subject.collect_count}} 人看过</p>
                     <div class="movie-rating">
-                        <Star :goodNum="item.rating.average/2"/> <span style="margin-left:0.04rem;color:#FFD716">{{item.rating.average.toFixed(1)}}</span>
+                        <Star :goodNum="item.subject.rating.average/2"/> <span style="margin-left:0.04rem;color:#FFD716">{{item.subject.rating.average.toFixed(1)}}</span>
                     </div>
                 </div>
             </div>
@@ -28,39 +28,26 @@
 <script>
 import Header from '@/common/ui-components/Header';
 import {mapState, mapMutations} from 'vuex';
-import {MOVIE_LIST_TYPE} from '@/common/config';
-import * as server from '@/server/movie_list_server';
+import * as server from '@/server/na_server';
 import Loading from '@/common/ui-components/Loading';
 import Star from '@/common/ui-components/Star';
 
 export default {
-    name: 'MovieList',
+    name: 'NAList',
     components: {
         Header,
         Star,
         Loading
     },
     computed: {
-        getListTitle() {
-            const path = this.$route.path;
-            const urlList = path.split('/');
-            switch(urlList[urlList.length - 1]) {
-                case MOVIE_LIST_TYPE.TOP250:
-                    return 'Top250';
-                case MOVIE_LIST_TYPE.NEW:
-                    return '新片榜';
-                default: 
-                    return '';
-            }
-        },
         ...mapState({
-            isLoading: state => state.movieList.isLoading,
-            movieList: state => state.movieList.movieList
+            isLoading: state => state.na.isLoading,
+            list: state => state.na.list
         })
     },
     methods: {
-        requestMovieList(type) {
-            server.requestMovieList(type, true);
+        requestNA() {
+            server.requestNA(true);
             // console.log(getDataByServer)
             // getDataByServer(urls.SERVER_BASE + urls.HOT_MOVIE, null).then(res => console.log(res))
             // this.$store.dispatch({
@@ -69,17 +56,7 @@ export default {
         }
     },
     mounted() {
-        console.log(this.$route.path);
-        const path = this.$route.path;
-        const urlList = path.split('/');
-        console.log(this.$route)
-        this.requestMovieList(urlList[urlList.length - 1]);
-    },
-    beforeRouteUpdate (to, from, next) {
-      const path = to.path;
-        const urlList = path.split('/');
-        this.requestMovieList(urlList[urlList.length - 1]);
-        // don't forget to call next()
+        this.requestNA();
     }
 }
 </script>

@@ -15,7 +15,7 @@
                 <swiper-slide><div style="width:100vw;height:300px;background-color:blue;"></div></swiper-slide>
                 <swiper-slide><div style="width:100vw;height:300px;background-color:yellow;"></div></swiper-slide> -->
                 <swiper-slide v-for="(item, index) in carouselList" :key="index">
-                    <div class="carousel-con">
+                    <div class="carousel-con" @click="gotoDetail(item.id)">
                         <img :src="item.images.medium" alt="carousel.jpg">
                         <div class="movie-info">
                             <p class="movie-title">{{item.title}}</p>
@@ -107,6 +107,11 @@ export default {
         },
         requestSoonMovie(successBK, errorBK) {
             server.requestSoonMovie(true, successBK, errorBK);
+        },
+        gotoDetail(id) {
+            this.$router.push({
+                path: '/moviedetail/' + id
+            })
         },
         ...mapMutations({
         //changeName: types.CHANGE_NAME

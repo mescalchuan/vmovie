@@ -46,7 +46,7 @@ export default {
     flex-wrap: wrap;
     margin: -0.26667rem 0.26667rem 0 0.26667rem;
     .list-con {
-        width: px2rem(225);
+        width: 30vw;//px2rem(225);
         height: px2rem(315);
         margin-top: px2rem(20);
         position: relative;
@@ -74,6 +74,16 @@ export default {
 .panel {
     margin: px2rem(20);
     @include font-dpr(15px);
+}
+@media screen and (min-width: 1536px) and (max-width: 2731px) {
+    .list-con {
+        width: 20vw !important;
+    }
+}
+@media screen and (min-width: 2732px) {
+    .list-con {
+        width: 10vw !important;
+    }
 }
 </style>
 

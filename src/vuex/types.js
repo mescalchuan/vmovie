@@ -15,10 +15,17 @@ export const REQUEST_LIST_BY_TYPE = 'REQUEST_LIST_BY_TYPE';
 
 export const GET_LIST_BY_TYPE = 'GET_LIST_BY_TYPE';
 
+//口碑榜
+export const REQUEST_WORD_MOUTH_LIST = 'REQUEST_WORD_MOUTH_LIST';
 
-export const MOVIE_LIST_TYPE = {
-    TOP250: 'top250',
-    WORD_MOUTH: 'wordmouth',
-    NORTH_AMERICA: 'na',
-    NEW: 'new'
-}
+export const GET_WORD_MOUTH_LIST = 'GET_WORD_MOUTH_LIST';
+
+//北美票房
+export const REQUEST_NA_LIST = 'REQUEST_NA_LIST';
+
+export const GET_NA_LIST = 'GET_NA_LIST';
+
+//电影详细信息
+export const REQUEST_MOVIE_DETAIL = 'REQUEST_MOVIE_DETAIL';
+
+export const GET_MOVIE_DETAIL = 'GET_MOVIE_DETAIL';
