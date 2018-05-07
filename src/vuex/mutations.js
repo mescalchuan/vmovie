@@ -83,5 +83,8 @@ export const movieDetailMutation = {
         console.log(detail);
         state.detail = detail;
         state.isLoading = false;
+    },
+    [types.CLEAR_DETAIL](state) {
+        state.detail = {};
     }
 }

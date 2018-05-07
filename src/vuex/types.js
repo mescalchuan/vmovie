@@ -29,3 +29,5 @@ export const GET_NA_LIST = 'GET_NA_LIST';
 export const REQUEST_MOVIE_DETAIL = 'REQUEST_MOVIE_DETAIL';
 
 export const GET_MOVIE_DETAIL = 'GET_MOVIE_DETAIL';
+
+export const CLEAR_DETAIL = 'CLEAR_DETAIL';

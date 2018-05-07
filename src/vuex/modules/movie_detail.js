@@ -2,7 +2,7 @@ import {movieDetailMutation} from '../mutations';
 
 const state = {
     isLoading: true,
-    movieDetail: {}
+    detail: {}
 }
 
 export default {
