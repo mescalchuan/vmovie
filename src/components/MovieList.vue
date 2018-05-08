@@ -3,13 +3,14 @@
         <Header :title="getListTitle"/>
         <Loading :isShow="isLoading"/>
         <div v-if="!isLoading" class="movie-list">
+            
             <div class="list-con" v-for="(item, index) in movieData.subjects" :key="index">
                 <img :src="item.images.medium" alt="carousel.jpg">
                 <div class="movie-info">
                     <p class="movie-title">{{item.title}}</p>
                     <span class="movie-actor">
                         导演:
-                        <span class="movie-director-name">{{item.directors[0].name}}</span>
+                        <span class="movie-director-name">{{item.directors[0] && item.directors[0].name}}</span>
                     </span>
                     <span class="movie-actor">
                         主演:
@@ -21,8 +22,8 @@
                     </div>
                 </div>
             </div>
-            <div v-if="getListTitle == 'Top250'">
-                <p class="margin-top-25 more-list-text" v-if="!gettingMore && start < movieData.total" @click="requestMoreList(start)">加载更多</p>
+            <div v-if="getListTitle == 'Top250' || getListTitle == 'Search'">
+                <p class="margin-top-25 more-list-text" v-if="!gettingMore && start < movieData.total" @click="requestMoreList(start, $route.query.q)">加载更多</p>
                 <p class="margin-top-25 more-list-text" v-else-if="!gettingMore && start >= movieData.total">已加载全部</p>
                 <p class="margin-top-25 more-list-text" v-else>加载中.....</p>
             </div>
@@ -50,6 +51,16 @@ export default {
             start: 20
         }
     },
+    // props: {
+    //     searchWords: {
+    //         type: String,
+    //         default: ''
+    //     },
+    //     searchTag: {
+    //         type: String,
+    //         default: ''
+    //     }
+    // },
     computed: {
         getListTitle() {
             const path = this.$route.path;
@@ -59,6 +70,8 @@ export default {
                     return 'Top250';
                 case MOVIE_LIST_TYPE.NEW:
                     return '新片榜';
+                case MOVIE_LIST_TYPE.SEARCH:
+                    return 'Search';
                 default: 
                     return '';
             }
@@ -70,16 +83,16 @@ export default {
         })
     },
     methods: {
-        requestMovieList(type) {
-            server.requestMovieList(type, true);
+        requestMovieList(type, searchKey) {
+            server.requestMovieList(type, true, searchKey);
             // console.log(getDataByServer)
             // getDataByServer(urls.SERVER_BASE + urls.HOT_MOVIE, null).then(res => console.log(res))
             // this.$store.dispatch({
             //     type: types.GET_HOT
             // })
         },
-        requestMoreList(start) {
-            server.requestMoreList(start)
+        requestMoreList(start, q) {
+            server.requestMoreList(start, q)
             .then(() => {
                 this.start += this.movieData.count;
                 console.log(this.movieData.start)
@@ -92,15 +105,16 @@ export default {
         console.log(this.$route.path);
         const path = this.$route.path;
         const urlList = path.split('/');
-        console.log(this.$route)
-        this.requestMovieList(urlList[urlList.length - 1]);
+        console.log(urlList[urlList.length - 1]);
+        console.log(this.$route.query.q);
+        this.requestMovieList(urlList[urlList.length - 1], this.$route.query.q);
     },
-    beforeRouteUpdate (to, from, next) {
-      const path = to.path;
-        const urlList = path.split('/');
-        this.requestMovieList(urlList[urlList.length - 1]);
-        // don't forget to call next()
-    }
+    // beforeRouteUpdate (to, from, next) {
+    //   const path = to.path;
+    //     const urlList = path.split('/');
+    //     this.requestMovieList(urlList[urlList.length - 1]);
+    //     // don't forget to call next()
+    // }
 }
 </script>
 

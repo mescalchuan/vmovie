@@ -1,9 +1,14 @@
 <template>
     <div>
         <div class="app-header">
-            <div class="app-search" @click="showModal">
-                <Icon :size="30" name="ios-alarm" color="blue"/>
+            <div @click="goback">
+                <Icon name="ios-arrow-back" color="white" size="25"/>
             </div>
+            <div class="app-search" @click="showModal">
+                <Icon name="ios-search-outline" color="#333333" size="25"/>
+                <p>{{searchWords}}</p>
+            </div>
+            <Icon name="ios-search-outline" color="transparent" size="25"/>
         </div>
         <Modal v-if="modalShow" backgroundColor="white">
             <div class="search-con">
@@ -26,9 +31,10 @@
 import Modal from '@/common/ui-components/Modal';
 import Icon from '@/common/ui-components/Icon';
 export default {
-    name: 'SearchResult',
+    name: 'Search',
     data() {
         return {
+            _selfWords: this.searchWords,
             modalShow: false,
             //searchWords: ''
         }
@@ -50,12 +56,19 @@ export default {
         closeModal() {
             this.modalShow = false;
         },
+        goback() {
+            this.$router.back();
+        }
         // searchByWord() {
         //     console.log(this.searchWords)
         //     this.$router.push({
         //         path: '/search_result'
         //     })
         // },
+    },
+    mounted() {
+        console.log(this.searchWords)
+        console.log(this.submit)
     },
     watch: {
         searchWords(nv, ov) {
@@ -73,17 +86,28 @@ export default {
 @import '../basic';
     .app-header {
         height: px2rem(90);
-        background-color: $main-color;
+        background-color: #2E963D;
         position: fixed;
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
         align-items: center;
         z-index: 2;
+        padding: 0 px2rem(20);
         width: 100vw;
         .app-search {
             width: 50vw;
-            height: 60%;
+            height: px2rem(50);
+            line-height: px2rem(50);
+            border-radius: px2rem(10);
             background-color: white;
+            text-align: right;
+            box-sizing: border-box;
+            padding: 0 px2rem(10);
+            display: flex;
+            > p {
+                margin-left: px2rem(5);
+                @include font-dpr(15px);
+            }
         }
     }
     .search-con {

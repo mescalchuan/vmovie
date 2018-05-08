@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Search :searchWords="searchWords" :submit="searchByWords"/>
+        <Search @newWords="changeWords" :searchWords="searchWords" :submit="searchByWords"/>
         <movie-list/>
     </div>
 </template>
@@ -8,20 +8,28 @@
 <script>
 import Search from '@/common/ui-components/Search';
 import MovieList from './MovieList';
+import {MOVIE_LIST_TYPE} from '@/common/config';
+import * as server from '@/server/movie_list_server';
 export default {
     name: 'SearchResult',
     data() {
         return {
-            searchWords: ''
+            searchWords: this.$route.query.q
         }
     },
-    searchByWords() {
-        console.log(this.searchWords)
+    
+    methods: {
+        changeWords(nv) {
+            console.log(nv);
+            this.searchWords = nv;
+        },
+        searchByWords() {
+            console.log(this.searchWords)
+            server.requestMovieList(MOVIE_LIST_TYPE.SEARCH, true, this.searchWords)
+        }
     },
     beforeMount() {
-        console.log(Search);
-        console.log(this.$refs);
-        console.log(this.$refs.search)
+        console.log(this.$route.query.q)
     },
     components: {
         Search,
