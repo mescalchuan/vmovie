@@ -32,3 +32,19 @@ $base-px: 75; //px
     height: 1px;
     border: none;
 }
+
+.margin-top-25 {
+    margin-top: px2rem(25) !important;
+}
+
+.margin-top-30 {
+    margin-top: px2rem(30) !important;
+}
+
+.margin-top-5 {
+    margin-top: px2rem(5) !important;
+}
+
+.margin-top-10 {
+    margin-top: px2rem(10) !important;
+}

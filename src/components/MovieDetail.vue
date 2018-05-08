@@ -20,68 +20,134 @@
                 <p class="detail-text-middle margin-top-25">简介</p>
                 <p class="detail-text margin-top-25">{{detail.summary}}</p>
                 <p class="detail-text-middle margin-top-25">演员</p>
-                <swiper :options="swiperOption" ref="mySwiper">
-                    <swiper-slide v-for="(item, index) in detail.casts" :key="index">
-                        <!-- <div class="carousel-con" @click="gotoDetail(item.id)">
-                            <img :src="item.images.medium" alt="carousel.jpg">
-                            <div class="movie-info">
-                                <p class="movie-title">{{item.title}}</p>
-                                <div class="movie-director">
-                                    <img :src="item.directors[0].avatars.small" alt="director.jpg" align="middle">
-                                    <span class="movie-director-name">{{item.directors[0].name}}</span>
+                <div class="cast-con margin-top-25">
+                    <div class="cast-list" v-for="(cast, cIndex) in detail.casts" :key="cIndex">
+                        <img :src="cast.avatars.medium" alt="cast.alt">
+                        <p class="detail-text">{{cast.name}}</p>
+                    </div>
+                </div>
+                <p class="detail-text-middle margin-top-25">剧照</p>
+                <div class="cast-con margin-top-25">
+                    <div class="photo-list" v-for="(photo, pIndex) in detail.photos.photos" :key="pIndex" @click="showModal(pIndex)">
+                        <img :src="photo.image" alt="photo.alt">
+                    </div>
+                    <div class="photo-list photo-more">
+                        <!-- 查看全部
+                        <div class="photo-more-line"></div>
+                        {{detail.photos.total}}张 -->
+                        点击图片
+                        <br/>
+                        查看大图
+                    </div>
+                </div>
+                <p class="detail-text-middle margin-top-25">评论</p>
+                <div class="comment-con">
+                    <div class="comment-list margin-top-30" v-for="(comment, cmIndex) in detail.shortComments.comments" :key="cmIndex">
+                        <img :src="comment.author.avatar" alt="comment.author.alt">
+                        <div class="comment-info">
+                            <div class="comment-header">
+                                <div>
+                                    <span class="detail-text-middle">{{comment.author.name}}</span>
+                                    <star :goodNum="comment.rating.value" :size="15"/>
                                 </div>
-                                <span class="movie-actor">
-                                    主演:
-                                    <span v-for="(actor, aIndex) in item.casts" :key="aIndex">{{actor.name}} </span>
-                                </span>
-                                <p class="movie-actor">{{item.collect_count}} 人看过</p>
-                                <div class="movie-rating">
-                                    <Star :goodNum="item.rating.average/2"/> <span style="margin-left:0.04rem;color:#FFD716">{{item.rating.average.toFixed(1)}}</span>
+                                <div>
+                                    <Icon name="ios-thumbs-up" :size="15"/>
+                                    <span class="detail-text">{{comment.useful_count}}</span>
                                 </div>
                             </div>
-                        </div> -->
-                        <div><img :src="item.avatars.medium" alt=""></div>
-                    </swiper-slide>
-                <div class="swiper-pagination"  slot="pagination"></div>
-            </swiper>
+                            <p class="detail-text margin-top-5">{{comment.content}}</p>
+                            <p class="detail-text-small margin-top-10" style="text-align:right">{{comment.created_at}}</p>
+                        </div>
+                    </div>
+                    <p class="detail-title margin-top-25 more-comments-text" v-if="!gettingMore && detail.shortComments.next_start < detail.shortComments.total" @click="requestMoreShortComments($route.params.id, detail.shortComments.next_start)">加载更多评论</p>
+                    <p class="detail-title margin-top-25 more-comments-text" v-else-if="!gettingMore && detail.shortComments.next_start >= detail.shortComments.total">已加载全部评论</p>
+                    <p class="detail-title margin-top-25 more-comments-text" v-else>加载中.....</p>
+                </div>
             </div>
+            <Modal v-if="modalShow" :callback="closeModal">
+                <div class="modal-con">
+                    <swiper :options="swiperOption" ref="mySwiper">
+                        <swiper-slide v-for="(photo, pIndex) in detail.photos.photos" :key="pIndex">
+                            <img class="photo-detail" :src="photo.image" alt="photo.alt">
+                        </swiper-slide>
+                    </swiper>
+                </div>
+            </Modal>
         </div>
     </div>
 </template>
 
 <script>
-
-import Header from '@/common/ui-components/Header';
 import { swiper, swiperSlide } from 'vue-awesome-swiper';
+import Header from '@/common/ui-components/Header';
 import {mapState, mapMutations} from 'vuex';
 import * as server from '@/server/movie_detail_server';
 import {CLEAR_DETAIL} from '@/vuex/types';
 import Loading from '@/common/ui-components/Loading';
 import Star from '@/common/ui-components/Star';
-import 'swiper/dist/css/swiper.css';
+import Icon from '@/common/ui-components/Icon';
+import Modal from '@/common/ui-components/Modal';
+import utils from '@/common/utils';
+import 'swiper/dist/css/swiper.min.css';
 
 export default {
     name: 'MovieDetail',
+    data() {
+        return {
+            start: 0,
+            modalShow: false,
+            swiperOption: {
+                autoplay: false,
+                // pagination: {
+                //     el: '.swiper-pagination'
+                // },
+                on: {
+                    // reachEnd: () => {
+                    //     this.start += 5;
+                    //     this.requestMoviePhotos(this.$route.params.id, this.start)
+                    // }
+                },
+                initialSlide: 0,
+                
+            }
+        }
+    },
     computed: {
         ...mapState({
             isLoading: state => state.movieDetail.isLoading,
+            gettingMore: state => state.movieDetail.gettingMore,
             detail: state => state.movieDetail.detail
         })
     },
     methods: {
-        requestMovieDetail(id) {
-            server.requestMovieDetail(id);
+        requestMovieDetail: server.requestMovieDetail,
+        requestMoviePhotos: server.requestMoviePhotos,
+        requestMoreShortComments: server.requestMoreShortComments,
+        requestMovieShortComments: server.requestMovieShortComments,
+        showModal(index) {
+            this.swiperOption.initialSlide = index;
+            this.modalShow = true;
+        },
+        closeModal() {
+            this.modalShow = false;
         },
         ...mapMutations({
             clearDetail: CLEAR_DETAIL
         })
     },
     mounted() {
-        this.requestMovieDetail(this.$route.params.id);
+        this.requestMovieDetail(this.$route.params.id)
+        .then(() => this.requestMoviePhotos(this.$route.params.id, 0))
+        .then(() => this.requestMovieShortComments(this.$route.params.id, 0))
+        .then(() => console.log(this.detail));
     },
     components: {
         Loading,
-        Star
+        Star,
+        Icon,
+        Modal,
+        swiper,
+        swiperSlide
     }
 }
 </script>
@@ -101,7 +167,6 @@ export default {
         }
     }
     .detail-info {
-        height: 1000px;
         background-color: #eeeeee;
         box-shadow: -1px -5px 10px #888888;
         padding: px2rem(30) px2rem(20);
@@ -136,12 +201,110 @@ export default {
             }
         }
         .detail-text-middle {
-             @include font-dpr(14px);
+            @include font-dpr(14px);
             color: #333333;
         }
+        .detail-text-small {
+            @include font-dpr(12px);
+            color: #333333;
+        }
+        .cast-con {
+            display: flex;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            //溢出可滚动，但隐藏滚动条
+            &::-webkit-scrollbar {
+                display:none;
+            }
+            .cast-list {
+                width: px2rem(180);
+                margin-left: px2rem(10);
+                text-align: center;
+                &:nth-child(1) {
+                    margin-left: 0
+                }
+                img {
+                    width: px2rem(180);
+                    height: px2rem(255);
+                }
+                p {
+                    text-overflow:ellipsis;
+                    overflow: hidden;
+                    white-space: nowrap;
+                }
+            }
+            .photo-list {
+                width: px2rem(300);
+                height: px2rem(200);
+                margin-left: px2rem(10);
+                overflow: hidden;
+                flex-shrink: 0;
+                &:nth-child(1) {
+                    margin-left: 0
+                }
+                img {
+                    width: auto;
+                    height: px2rem(200);
+                }
+            }
+            .photo-more {
+                background-color: #a39f9f;
+                flex-shrink: 0;
+                width: px2rem(200);
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                @include font-dpr(12px);
+                color: white;
+                .photo-more-line {
+                    width: px2rem(80);
+                    height: px2rem(3);
+                    background-color: white;
+                    margin: px2rem(5) 0;
+                }
+            }
+        }
+        .comment-con {
+            display: flex;
+            flex-direction: column;
+            .comment-list {
+                display: flex;
+                padding: px2rem(10) 0;
+                img {
+                    width: px2rem(48);
+                    height: px2rem(48);
+                    border-radius: px2rem(48);
+                }
+                .comment-info {
+                    flex: 1;
+                    padding-left: px2rem(20);
+                    .comment-header {
+                        display: flex;
+                        justify-content: space-between;
+                    }
+                }
+            }
+            .more-comments-text {
+                color: #2E963D;
+                text-align: center;
+                margin-bottom: 0;
+            }
+        }
     }
-}
-.margin-top-25 {
-    margin-top: px2rem(25) !important;
+    .photo-detail {
+        width: 100vw;
+        height: auto;
+    }
+    .modal-con {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .swiper-slide {
+            align-self: center;
+        }
+    }
 }
 </style>

@@ -2,18 +2,13 @@
     <div class="home-con">
         <Loading :isShow="hIsLoading || sIsLoading"/>
         <div v-if="!hIsLoading && !sIsLoading">
-            <div class="app-header">
-                <div class="app-search">
+            <!-- <div class="app-header">
+                <div class="app-search" @click="showModal">
                     <Icon :size="30" name="ios-alarm" color="blue"/>
                 </div>
-            </div>
+            </div> -->
+            <Search @newWords="changeWords" :searchWords="searchWords" :submit="searchByWords"/>
             <swiper :options="swiperOption" ref="mySwiper">
-            <!-- slides -->
-                <!-- <swiper-slide>
-                    <div style="width:100vw;height:300px;background-color:red;"></div>
-                </swiper-slide>
-                <swiper-slide><div style="width:100vw;height:300px;background-color:blue;"></div></swiper-slide>
-                <swiper-slide><div style="width:100vw;height:300px;background-color:yellow;"></div></swiper-slide> -->
                 <swiper-slide v-for="(item, index) in carouselList" :key="index">
                     <div class="carousel-con" @click="gotoDetail(item.id)">
                         <img :src="item.images.medium" alt="carousel.jpg">
@@ -36,12 +31,23 @@
                 </swiper-slide>
                 <div class="swiper-pagination"  slot="pagination"></div>
             </swiper>
-            {{name}}
-            <button @click="changeName">changeName</button>
-            <button @click="requestHotMovie">request</button>
             <home-list title="正在热映" :list="hotList" :listLeft="hotListLeft"/>
             <home-list title="即将上映" :list="soonList" :listLeft="soonListLeft"/>
         </div>
+        <!-- <Modal v-if="modalShow" backgroundColor="white">
+            <div class="search-con">
+                <div @click="closeModal">
+                    <Icon name="ios-arrow-back" color="white" size="25"/>
+                </div>
+                <div class="input-con">
+                    <input type="text" v-model="searchWords"/>  
+                    <div @click="searchByWord">
+                        <Icon name="ios-search-outline" color="#333333" size="25"/>
+                    </div>
+                </div>  
+                <Icon name="ios-search-outline" color="transparent" size="25"/>
+            </div>
+        </Modal>    -->
     </div>
 </template>
 
@@ -52,6 +58,9 @@ import * as server from '@/server/home_server';
 import Loading from '@/common/ui-components/Loading';
 import Star from '@/common/ui-components/Star';
 import HomeList from '@/common/ui-components/HomeList';
+import Search from '@/common/ui-components/Search';
+// import Modal from '@/common/ui-components/Modal';
+// import Icon from '@/common/ui-components/Icon';
 import 'swiper/dist/css/swiper.css';
 
 const listLeft = (list) => {
@@ -63,6 +72,9 @@ export default {
     name: 'Home',
     data() {
         return {
+            searchWords: '',
+            // modalShow: false,
+            // searchWords: '',
             swiperOption: {
                 loop: true,
                 autoplay: false,
@@ -97,6 +109,31 @@ export default {
                 name: "123456"
             })
         },
+        changeWords(nv) {
+            console.log(nv);
+            this.searchWords = nv;
+        },
+        searchByWords() {
+            this.$router.push({
+                path: '/search_result',
+                query: {
+                    q: this.searchWords
+                }
+            })
+            console.log(this.searchWords)
+        },
+        // showModal() {
+        //     this.modalShow = true;
+        // },
+        // closeModal() {
+        //     this.modalShow = false;
+        // },
+        // searchByWord() {
+        //     console.log(this.searchWords)
+        //     this.$router.push({
+        //         path: '/search_result'
+        //     })
+        // },
         requestHotMovie() {
             server.requestHotMovie(true, false);
             // console.log(getDataByServer)
@@ -126,7 +163,10 @@ export default {
         swiperSlide,
         Loading,
         Star,
-        HomeList
+        HomeList,
+        Search
+        //Modal,
+        //Icon
     }
 }
 </script>
@@ -134,21 +174,21 @@ export default {
 <style lang='scss'>
 @import '../common/basic';
 .home-con {
-    .app-header {
-        height: px2rem(90);
-        background-color: $main-color;
-        position: fixed;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 2;
-        width: 100vw;
-        .app-search {
-            width: 50vw;
-            height: 60%;
-            background-color: white;
-        }
-    }
+    // .app-header {
+    //     height: px2rem(90);
+    //     background-color: $main-color;
+    //     position: fixed;
+    //     display: flex;
+    //     justify-content: center;
+    //     align-items: center;
+    //     z-index: 2;
+    //     width: 100vw;
+    //     .app-search {
+    //         width: 50vw;
+    //         height: 60%;
+    //         background-color: white;
+    //     }
+    // }
     .carousel-con {
         width: 95vw;
         box-sizing: border-box;
@@ -213,6 +253,29 @@ export default {
         //text-align: right;
         position: static;
     }
+    // .search-con {
+    //     height: px2rem(90);
+    //     background-color: #2E963D;
+    //     display: flex;
+    //     justify-content: space-between;
+    //     align-items: center;
+    //     padding: 0 px2rem(20);
+    //     .input-con {
+    //         height: px2rem(50);
+    //         display: flex;
+    //         align-items: center;
+    //         box-sizing: border-box;
+    //         border-radius: px2rem(10);
+    //         padding: 0 px2rem(10);
+    //         // line-height: px2rem(40);
+    //         background-color: white;
+    //         input {
+    //             height: px2rem(50);
+    //             border: 0;
+    //             @include font-dpr(15px);
+    //         }
+    //     }   
+    // }
     // @media screen and (max-width: 320px) and (min-resolution : 2dppx) {
     //     .movie-title {
     //         @include font-dpr(15px);

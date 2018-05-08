@@ -1,17 +1,17 @@
 <template>
-    <div class="">
+    <div>
         <p class="panel">{{title}}</p>
-            <div class="movie-list">
-                <div class="list-con" v-for="(item, index) in list" :key="index">
-                    <img :src="item.images.medium" alt="movie.jpg">
-                    <div class="list-bottom">
-                        <p class="">{{item.title}}</p>
-                        <Star :size="15" :goodNum="item.rating.average/2"/> <span style="margin:0.04rem;color:#FFD716">{{item.rating.average.toFixed(1)}}</span>
-                    </div>
+        <div class="movie-list">
+            <div class="list-con" v-for="(item, index) in list" :key="index" @click="gotoDetail(item.id)">
+                <img :src="item.images.medium" alt="movie.jpg">
+                <div class="list-bottom">
+                    <p>{{item.title}}</p>
+                    <Star :size="15" :goodNum="item.rating.average/2"/> <span style="margin:0.04rem;color:#FFD716">{{item.rating.average.toFixed(1)}}</span>
                 </div>
-                <div class="list-con" v-for="(item, index) in listLeft" :key="index"></div>
             </div>
+            <div class="list-con" v-for="(item, index) in listLeft" :key="index"></div>
         </div>
+    </div>
 </template>
 
 <script>
@@ -30,6 +30,13 @@ export default {
         title: {
             type: String,
             default: ''
+        }
+    },
+    methods: {
+        gotoDetail(id) {
+            this.$router.push({
+                path: '/moviedetail/' + id
+            })
         }
     },
     components: {
@@ -72,7 +79,7 @@ export default {
     }
 }
 .panel {
-    margin: px2rem(20);
+    margin: px2rem(30);
     @include font-dpr(15px);
 }
 @media screen and (min-width: 1536px) and (max-width: 2731px) {

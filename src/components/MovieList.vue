@@ -3,7 +3,7 @@
         <Header :title="getListTitle"/>
         <Loading :isShow="isLoading"/>
         <div v-if="!isLoading" class="movie-list">
-            <div class="list-con" v-for="(item, index) in movieList" :key="index">
+            <div class="list-con" v-for="(item, index) in movieData.subjects" :key="index">
                 <img :src="item.images.medium" alt="carousel.jpg">
                 <div class="movie-info">
                     <p class="movie-title">{{item.title}}</p>
@@ -20,6 +20,11 @@
                         <Star :goodNum="item.rating.average/2"/> <span style="margin-left:0.04rem;color:#FFD716">{{item.rating.average.toFixed(1)}}</span>
                     </div>
                 </div>
+            </div>
+            <div v-if="getListTitle == 'Top250'">
+                <p class="margin-top-25 more-list-text" v-if="!gettingMore && start < movieData.total" @click="requestMoreList(start)">加载更多</p>
+                <p class="margin-top-25 more-list-text" v-else-if="!gettingMore && start >= movieData.total">已加载全部</p>
+                <p class="margin-top-25 more-list-text" v-else>加载中.....</p>
             </div>
         </div>
     </div>
@@ -40,6 +45,11 @@ export default {
         Star,
         Loading
     },
+    data() {
+        return {
+            start: 20
+        }
+    },
     computed: {
         getListTitle() {
             const path = this.$route.path;
@@ -55,7 +65,8 @@ export default {
         },
         ...mapState({
             isLoading: state => state.movieList.isLoading,
-            movieList: state => state.movieList.movieList
+            movieData: state => state.movieList.movieData,
+            gettingMore: state => state.movieList.gettingMore
         })
     },
     methods: {
@@ -66,6 +77,15 @@ export default {
             // this.$store.dispatch({
             //     type: types.GET_HOT
             // })
+        },
+        requestMoreList(start) {
+            server.requestMoreList(start)
+            .then(() => {
+                this.start += this.movieData.count;
+                console.log(this.movieData.start)
+                console.log(this.movieData.subjects.length)
+                console.log('succeed')
+            })
         }
     },
     mounted() {
@@ -130,5 +150,11 @@ export default {
             }
         }
     }
+    .more-list-text {
+            @include font-dpr(16px);
+            margin-top: px2rem(5);
+            color: #2E963D;
+            text-align: center;
+        }
 </style>
 

@@ -1,4 +1,7 @@
 export default {
+    clone(obj) {
+        return JSON.parse(JSON.stringify(obj));
+    },
     px2rem(pxv) {
         return `${parseInt(pxv) / 75}rem`;
     },

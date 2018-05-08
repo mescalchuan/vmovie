@@ -24,15 +24,24 @@ const getUrlByType = (type) => {
         default: 
             break;
     }
-    console.log(url);
     return url;
 }
 
 export const requestMovieList = (type, isLoading) => {
-    console.log(type);
     store.commit({type: types.REQUEST_LIST_BY_TYPE, isLoading});
     getDataByServer(getUrlByType(type), null).then(res => {
         console.log(res);
         store.commit({type: types.GET_LIST_BY_TYPE, listData: res});
+    })
+}
+
+export const requestMoreList = (start) => {
+    return new Promise((resolve, reject) => {
+        store.commit({type: types.REQUEST_MORE_BY_TYPE});
+        getDataByServer(`${configs.SERVER_BASE}${configs.TOP250_LIST}?&start=${start}&count=20`).then(res => {
+            store.commit({type: types.GET_MORE_BY_TYPE, listData: res});
+            resolve();
+        }, err => reject(err))
+        .catch(err => reject(err))
     })
 }

@@ -7,6 +7,7 @@ const MovieList = () => import('@/components/MovieList')
 const WordMouthList = () => import('@/components/WordMouthList')
 const NAList = () => import('@/components/NAList')
 const MovieDetail  = () => import('@/components/MovieDetail')
+const SearchResult = () => import('@/components/SearchResult')
 
 Vue.use(VueRouter)
 
@@ -24,7 +25,10 @@ export default new VueRouter({
       },*/ {
         path: 'home',
         name: 'home',
-        component: Home
+        component: Home,
+        meta: { 
+          keepAlive: true 
+        }
       },{
         path: 'list/:type',
         name: 'list',
@@ -45,6 +49,11 @@ export default new VueRouter({
       path: '/moviedetail/:id',
       name: 'moviedetail',
       component: MovieDetail
+    },
+    {
+      path: '/search_result',
+      name: 'search_result',
+      component: SearchResult
     }
   ]
 })

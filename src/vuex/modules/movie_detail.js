@@ -2,6 +2,7 @@ import {movieDetailMutation} from '../mutations';
 
 const state = {
     isLoading: true,
+    gettingMore: false,
     detail: {}
 }
 
