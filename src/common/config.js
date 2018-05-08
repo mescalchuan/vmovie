@@ -16,11 +16,14 @@ export const NEW_LIST = 'v2/movie/new_movies';
 
 export const MOVIE_DETAIL = 'v2/movie/subject/';
 
+export const SEARCH_BY_WORDS = 'v2/movie/search';
+
 export const MOVIE_LIST_TYPE = {
     TOP250: 'top250',
     WORD_MOUTH: 'wordmouth',
     NORTH_AMERICA: 'na',
-    NEW: 'new'
+    NEW: 'new',
+    SEARCH: 'search_result'
 }
 
 export const AUTH = {

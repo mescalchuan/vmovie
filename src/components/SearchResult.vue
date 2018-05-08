@@ -12,16 +12,14 @@ export default {
     name: 'SearchResult',
     data() {
         return {
-            searchWords: ''
+            searchWords: this.$route.query.q
         }
     },
     searchByWords() {
         console.log(this.searchWords)
     },
     beforeMount() {
-        console.log(Search);
-        console.log(this.$refs);
-        console.log(this.$refs.search)
+        console.log(this.$route.query.q)
     },
     components: {
         Search,
