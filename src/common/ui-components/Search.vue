@@ -6,7 +6,10 @@
             </div>
             <div class="app-search" @click="showModal">
                 <Icon name="ios-search-outline" color="#333333" size="25"/>
+<<<<<<< HEAD
                 <p>{{searchWords}}</p>
+=======
+>>>>>>> 3e77f50929e56aa5d41f74419090177c9d702b0b
             </div>
             <Icon name="ios-search-outline" color="transparent" size="25"/>
         </div>
@@ -68,7 +71,10 @@ export default {
     },
     mounted() {
         console.log(this.searchWords)
+<<<<<<< HEAD
         console.log(this.submit)
+=======
+>>>>>>> 3e77f50929e56aa5d41f74419090177c9d702b0b
     },
     watch: {
         searchWords(nv, ov) {
@@ -97,17 +103,23 @@ export default {
         .app-search {
             width: 50vw;
             height: px2rem(50);
+<<<<<<< HEAD
             line-height: px2rem(50);
+=======
+>>>>>>> 3e77f50929e56aa5d41f74419090177c9d702b0b
             border-radius: px2rem(10);
             background-color: white;
             text-align: right;
             box-sizing: border-box;
             padding: 0 px2rem(10);
+<<<<<<< HEAD
             display: flex;
             > p {
                 margin-left: px2rem(5);
                 @include font-dpr(15px);
             }
+=======
+>>>>>>> 3e77f50929e56aa5d41f74419090177c9d702b0b
         }
     }
     .search-con {
