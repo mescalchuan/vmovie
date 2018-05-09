@@ -154,8 +154,11 @@ export default {
         })
     },
     mounted() {
-        this.requestHotMovie();
-        this.requestSoonMovie();
+        Promise.all([this.requestHotMovie, this.requestSoonMovie])
+        .then(() => {}, err => console.log(err))
+        .catch(err => console.log(err));
+        // this.requestHotMovie();
+        // this.requestSoonMovie();
     },
     components: {
         swiper,
