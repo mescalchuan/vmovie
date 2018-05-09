@@ -22,8 +22,8 @@
                     </div>
                 </div>
             </div>
-            <div v-if="getListTitle == 'Top250' || getListTitle == 'Search'">
-                <p class="margin-top-25 more-list-text" v-if="!gettingMore && start < movieData.total" @click="requestMoreList(start, $route.query.q)">加载更多</p>
+            <div v-if="getListTitle == 'Top250' || getListTitle == 'Search'" :class="{'margin-bottom-20': isDynamic}">
+                <p class="margin-top-25 more-list-text" v-if="!gettingMore && start < movieData.total" @click="requestMoreList(start, getSearchReqInfo.searchKey, getSearchReqInfo.searchType)">加载更多</p>
                 <p class="margin-top-25 more-list-text" v-else-if="!gettingMore && start >= movieData.total">已加载全部</p>
                 <p class="margin-top-25 more-list-text" v-else>加载中.....</p>
             </div>
@@ -39,6 +39,15 @@ import * as server from '@/server/movie_list_server';
 import Loading from '@/common/ui-components/Loading';
 import Star from '@/common/ui-components/Star';
 
+const requestMovieList = (self) => {
+    const path = self.$route.path;
+    const urlList = path.split('/');
+    const {tag, q} = (self.isDynamic ? self.dynamicInfo : self.$route.query); 
+    const searchKey = tag ? tag : q;
+    const searchType = tag ? 'tag' : 'q';
+    self.requestMovieList(urlList[urlList.length - 1], searchKey, searchType);
+}
+
 export default {
     name: 'MovieList',
     components: {
@@ -49,6 +58,17 @@ export default {
     data() {
         return {
             start: 20
+        }
+    },
+    props: {
+        //列表数据是否会重新加载，搜索结果页->true，top250和new->false
+        isDynamic: {
+            type: Boolean,
+            default: false
+        },
+        dynamicInfo: {
+            type: Object,
+            default: {}
         }
     },
     // props: {
@@ -62,6 +82,20 @@ export default {
     //     }
     // },
     computed: {
+        getSearchReqInfo() {
+            console.log(111);
+            console.log(this.dynamicInfo)
+            const {tag, q} = (this.isDynamic ? this.dynamicInfo : this.$route.query);
+            const searchKey = tag ? tag : q;
+            const searchType = tag ? 'tag' : 'q';
+            console.log({
+                searchKey, searchType
+            })
+            return {
+                searchKey,
+                searchType
+            }
+        },
         getListTitle() {
             const path = this.$route.path;
             const urlList = path.split('/');
@@ -83,16 +117,16 @@ export default {
         })
     },
     methods: {
-        requestMovieList(type, searchKey) {
-            server.requestMovieList(type, true, searchKey);
+        requestMovieList(type, searchKey, searchType) {
+            server.requestMovieList(type, true, searchKey, searchType);
             // console.log(getDataByServer)
             // getDataByServer(urls.SERVER_BASE + urls.HOT_MOVIE, null).then(res => console.log(res))
             // this.$store.dispatch({
             //     type: types.GET_HOT
             // })
         },
-        requestMoreList(start, q) {
-            server.requestMoreList(start, q)
+        requestMoreList(start, q, type) {
+            server.requestMoreList(start, q, type)
             .then(() => {
                 this.start += this.movieData.count;
                 console.log(this.movieData.start)
@@ -102,19 +136,19 @@ export default {
         }
     },
     mounted() {
-        console.log(this.$route.path);
-        const path = this.$route.path;
-        const urlList = path.split('/');
-        console.log(urlList[urlList.length - 1]);
-        console.log(this.$route.query.q);
-        this.requestMovieList(urlList[urlList.length - 1], this.$route.query.q);
+        // const path = this.$route.path;
+        // const urlList = path.split('/');
+        // const {tag, q} = (this.isDynamic ? this.dynamicInfo : this.$route.query); 
+        // const searchKey = tag ? tag : q;
+        // const searchType = tag ? 'tag' : 'q';
+        // this.requestMovieList(urlList[urlList.length - 1], searchKey, searchType);
+        requestMovieList(this);
     },
-    // beforeRouteUpdate (to, from, next) {
-    //   const path = to.path;
-    //     const urlList = path.split('/');
-    //     this.requestMovieList(urlList[urlList.length - 1]);
-    //     // don't forget to call next()
-    // }
+    beforeRouteUpdate (to, from, next) {
+        requestMovieList(this);
+        // don't forget to call next()
+        next();
+    }
 }
 </script>
 
@@ -170,5 +204,8 @@ export default {
             color: #2E963D;
             text-align: center;
         }
+    .margin-bottom-20 {
+        margin-bottom: px2rem(20);
+    }
 </style>
 

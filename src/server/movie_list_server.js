@@ -5,7 +5,7 @@ import store from '@/vuex/store';
 import {data} from '@/common/testData';
 import { WORD_MOUTH_LIST } from './../common/config';
 
-const getUrlByType = (type, searchKey) => {
+const getUrlByType = (type, searchKey, searchType) => {
     let url = configs.SERVER_BASE;
     console.log(types);
     switch(type) {
@@ -22,7 +22,8 @@ const getUrlByType = (type, searchKey) => {
             url += `${configs.NEW_LIST}?${configs.AUTH.KEY}=${configs.AUTH.VALUE}`;
             break;
         case configs.MOVIE_LIST_TYPE.SEARCH:
-            url +=`${configs.SEARCH_BY_WORDS}?q=${searchKey}`;
+            const key = searchType == 'tag' ? 'tag' : 'q';
+            url +=`${configs.SEARCH_BY_WORDS}?${key}=${searchKey}`;
             break;
         default: 
             break;
@@ -30,18 +31,20 @@ const getUrlByType = (type, searchKey) => {
     return url;
 }
 
-export const requestMovieList = (type, isLoading, searchKey) => {
+export const requestMovieList = (type, isLoading, searchKey, searchType) => {
     store.commit({type: types.REQUEST_LIST_BY_TYPE, isLoading});
-    getDataByServer(getUrlByType(type, searchKey), null).then(res => {
+    getDataByServer(getUrlByType(type, searchKey, searchType), null).then(res => {
         console.log(res);
         store.commit({type: types.GET_LIST_BY_TYPE, listData: res});
     })
 }
 
-export const requestMoreList = (start, searchKey) => {
+export const requestMoreList = (start, searchKey, searchType) => {
     return new Promise((resolve, reject) => {
         store.commit({type: types.REQUEST_MORE_BY_TYPE});
-        const url = searchKey ? `${configs.SERVER_BASE}${configs.SEARCH_BY_WORDS}?q=${searchKey}&start=${start}&count=20` : `${configs.SERVER_BASE}${configs.TOP250_LIST}?&start=${start}&count=20`;
+        console.log(searchKey, searchType)
+        const key = searchType == 'tag' ? 'tag' : 'q';
+        const url = searchKey ? `${configs.SERVER_BASE}${configs.SEARCH_BY_WORDS}?${key}=${searchKey}&start=${start}&count=20` : `${configs.SERVER_BASE}${configs.TOP250_LIST}?&start=${start}&count=20`;
         getDataByServer(url).then(res => {
             store.commit({type: types.GET_MORE_BY_TYPE, listData: res});
             resolve();

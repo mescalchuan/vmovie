@@ -59,6 +59,7 @@ import Loading from '@/common/ui-components/Loading';
 import Star from '@/common/ui-components/Star';
 import HomeList from '@/common/ui-components/HomeList';
 import Search from '@/common/ui-components/Search';
+import {TAG} from '@/common/config';
 // import Modal from '@/common/ui-components/Modal';
 // import Icon from '@/common/ui-components/Icon';
 import 'swiper/dist/css/swiper.css';
@@ -114,10 +115,11 @@ export default {
             this.searchWords = nv;
         },
         searchByWords() {
+            const queryKey = !!(~TAG.indexOf(this.searchWords)) ? 'tag' : 'q'; 
             this.$router.push({
                 path: '/search_result',
                 query: {
-                    q: this.searchWords
+                    [queryKey]: this.searchWords
                 }
             })
             console.log(this.searchWords)

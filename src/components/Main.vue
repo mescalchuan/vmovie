@@ -2,8 +2,8 @@
     <div class="app-content">
         <router-view/>
         <div class="app-tabbar">
-        <div :class="['tab-item', activeTab === 'home' ? 'active' : '']" @click="changeTab('home')">home</div>
-        <div :class="['tab-item', activeTab === 'top250' ? 'active' : '']" @click="changeTab('top250')">top250</div>
+        <div :class="['tab-item', activeTab === 'home' ? 'active' : '']" @click="changeTab('home')">首页</div>
+        <div :class="['tab-item', activeTab === 'top250' ? 'active' : '']" @click="changeTab('top250')">Top250</div>
         <div :class="['tab-item', activeTab === 'wordmouth' ? 'active' : '']" @click="changeTab('wordmouth')">口碑榜</div>
         <div :class="['tab-item', activeTab === 'na' ? 'active' : '']" @click="changeTab('na')">北美票房榜</div>
         <div :class="['tab-item', activeTab === 'new' ? 'active' : '']" @click="changeTab('new')">新片榜</div>
@@ -13,6 +13,13 @@
 
 <script>
 import * as types from "@/vuex/types";
+
+const changeTab = self => {
+    const path = self.$route.path;
+    const urlList = path.split('/');
+    self.activeTab = urlList[urlList.length - 1];
+}
+
 export default {
     name: 'Main',
 
@@ -51,6 +58,14 @@ export default {
             })
         }
     },
+    mounted() {
+        changeTab(this);
+    },
+    watch: {
+        $route(nv, ov) {
+            changeTab(this);
+        }
+    }
 }
 </script>
 
