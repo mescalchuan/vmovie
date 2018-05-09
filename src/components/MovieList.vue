@@ -22,9 +22,9 @@
                 </div>
             </div>
             <div v-if="getListTitle == 'Top250' || getListTitle == 'Search'" :class="{'margin-bottom-20': isDynamic}">
-                <p class="margin-top-25 more-list-text" v-if="!gettingMore && start < movieData.total" @click="requestMoreList(start, getSearchReqInfo.searchKey, getSearchReqInfo.searchType)">加载更多</p>
-                <p class="margin-top-25 more-list-text" v-else-if="!gettingMore && start >= movieData.total">已加载全部</p>
-                <p class="margin-top-25 more-list-text" v-else>加载中.....</p>
+                <p class="more-list-text" v-if="!gettingMore && start < movieData.total" @click="requestMoreList(start, getSearchReqInfo.searchKey, getSearchReqInfo.searchType)">加载更多</p>
+                <p class="more-list-text" v-else-if="!gettingMore && start >= movieData.total">已加载全部</p>
+                <p class="more-list-text" v-else>加载中.....</p>
             </div>
         </div>
     </div>
@@ -148,59 +148,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../common/basic';
-
-.movie-list {
-    margin-top: px2rem(100);
+@import '../common/list';
+.more-list-text {
+    @include font-dpr(16px);
+    margin-top: px2rem(25);
+    color: $main-color;
+    text-align: center;
 }
-.list-con {
-        box-sizing: border-box;
-        margin: px2rem(10) auto 0 auto;
-        //height: px2rem(400);
-        background-color: $line-color;
-        padding: px2rem(25);
-        display: flex;
-        align-items: center;
-        > img {
-            width: px2rem(180);
-            height: px2rem(251);
-        }
-        .movie-info {
-            flex: 1;
-            align-self: flex-start;
-            padding: {
-                left: px2rem(30);
-            }
-            .movie-title {
-                @include font-dpr(15px);
-            }
-            .movie-director-name {
-                color: #666666;
-                @include font-dpr(13px);
-                margin-left: px2rem(10);
-            }
-            .movie-actor {
-                display: inline-block;
-                margin-top: px2rem(20);
-                color: #666666;
-                @include font-dpr(13px);
-                span {
-                    white-space: pre-nowrap;
-                }
-            } 
-            .movie-rating {
-                margin-top: px2rem(10);
-            }
-        }
-    }
-    .more-list-text {
-            @include font-dpr(16px);
-            margin-top: px2rem(5);
-            color: $main-color;
-            text-align: center;
-        }
-    .margin-bottom-20 {
-        margin-bottom: px2rem(20);
-    }
 </style>
 

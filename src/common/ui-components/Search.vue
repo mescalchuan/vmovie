@@ -119,72 +119,72 @@ export default {
 
 <style lang="scss" scoped>
 @import '../basic';
-    .app-header {
-        height: px2rem(90);
-        background-color: $main-color;
-        position: fixed;
+.app-header {
+    height: px2rem(90);
+    background-color: $main-color;
+    position: fixed;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 2;
+    padding: 0 px2rem(20);
+    width: 100vw;
+    .app-search {
+        width: 50vw;
+        height: px2rem(50);
+        line-height: px2rem(50);
+        border-radius: px2rem(10);
+        background-color: white;
+        text-align: right;
+        box-sizing: border-box;
+        padding: 0 px2rem(10);
         display: flex;
-        justify-content: space-between;
+        > p {
+            margin-left: px2rem(5);
+            @include font-dpr(15px);
+        }
+    }
+}
+.search-con {
+    height: px2rem(90);
+    background-color: $main-color;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 px2rem(20);
+    .input-con {
+        height: px2rem(50);
+        display: flex;
         align-items: center;
-        z-index: 2;
-        padding: 0 px2rem(20);
-        width: 100vw;
-        .app-search {
-            width: 50vw;
+        box-sizing: border-box;
+        border-radius: px2rem(10);
+        padding: 0 px2rem(10);
+        // line-height: px2rem(40);
+        background-color: white;
+        input {
             height: px2rem(50);
-            line-height: px2rem(50);
-            border-radius: px2rem(10);
-            background-color: white;
-            text-align: right;
-            box-sizing: border-box;
-            padding: 0 px2rem(10);
-            display: flex;
-            > p {
-                margin-left: px2rem(5);
-                @include font-dpr(15px);
+            border: 0;
+            @include font-dpr(15px);
+        }
+    }   
+}
+.modal-content {
+    height: 100vh;
+    padding: px2rem(20);
+    .tag-con {
+        display: flex;
+        justify-content: center;
+        .tag-item {
+            flex-shrink: 0;
+            margin-left: px2rem(40);
+            text-align: center;
+            &:nth-child(1) {
+                margin-left: 0;
+            }
+            .tag-text {
+                @include font-dpr(13px);
             }
         }
     }
-    .search-con {
-        height: px2rem(90);
-        background-color: $main-color;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0 px2rem(20);
-        .input-con {
-            height: px2rem(50);
-            display: flex;
-            align-items: center;
-            box-sizing: border-box;
-            border-radius: px2rem(10);
-            padding: 0 px2rem(10);
-            // line-height: px2rem(40);
-            background-color: white;
-            input {
-                height: px2rem(50);
-                border: 0;
-                @include font-dpr(15px);
-            }
-        }   
-    }
-    .modal-content {
-        height: 100vh;
-        padding: px2rem(20);
-        .tag-con {
-            display: flex;
-            justify-content: center;
-            .tag-item {
-                flex-shrink: 0;
-                margin-left: px2rem(40);
-                text-align: center;
-                &:nth-child(1) {
-                    margin-left: 0;
-                }
-                .tag-text {
-                    @include font-dpr(13px);
-                }
-            }
-        }
-    }
+}
 </style>

@@ -1,0 +1,45 @@
+@import './basic';
+
+.movie-list {
+    margin-top: px2rem(100);
+}
+.list-con {
+    box-sizing: border-box;
+    margin: px2rem(10) auto 0 auto;
+    //height: px2rem(400);
+    background-color: $line-color;
+    padding: px2rem(25);
+    display: flex;
+    align-items: center;
+    > img {
+        width: px2rem(180);
+        height: px2rem(251);
+    }
+    .movie-info {
+        flex: 1;
+        align-self: flex-start;
+        padding: {
+            left: px2rem(30);
+        }
+        .movie-title {
+            @include font-dpr(15px);
+        }
+        .movie-director-name {
+            color: #666666;
+            @include font-dpr(13px);
+            margin-left: px2rem(10);
+        }
+        .movie-actor {
+            display: inline-block;
+            margin-top: px2rem(20);
+            color: #666666;
+            @include font-dpr(13px);
+            span {
+                white-space: pre-nowrap;
+            }
+        } 
+        .movie-rating {
+            margin-top: px2rem(10);
+        }
+    }
+}

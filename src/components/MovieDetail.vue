@@ -59,9 +59,9 @@
                             <p class="detail-text-small margin-top-10" style="text-align:right">{{comment.created_at}}</p>
                         </div>
                     </div>
-                    <p class="detail-title margin-top-25 more-comments-text" v-if="!gettingMore && detail.shortComments.next_start < detail.shortComments.total" @click="requestMoreShortComments($route.params.id, detail.shortComments.next_start)">加载更多评论</p>
-                    <p class="detail-title margin-top-25 more-comments-text" v-else-if="!gettingMore && detail.shortComments.next_start >= detail.shortComments.total">已加载全部评论</p>
-                    <p class="detail-title margin-top-25 more-comments-text" v-else>加载中.....</p>
+                    <p class="detail-title more-comments-text" v-if="!gettingMore && detail.shortComments.next_start < detail.shortComments.total" @click="requestMoreShortComments($route.params.id, detail.shortComments.next_start)">加载更多评论</p>
+                    <p class="detail-title more-comments-text" v-else-if="!gettingMore && detail.shortComments.next_start >= detail.shortComments.total">已加载全部评论</p>
+                    <p class="detail-title more-comments-text" v-else>加载中.....</p>
                 </div>
             </div>
             <Modal v-if="modalShow" :callback="closeModal">
@@ -288,6 +288,7 @@ export default {
             .more-comments-text {
                 color: $main-color;
                 text-align: center;
+                margin-top: px2rem(25);
                 margin-bottom: 0;
             }
         }
