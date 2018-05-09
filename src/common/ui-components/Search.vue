@@ -121,7 +121,7 @@ export default {
 @import '../basic';
     .app-header {
         height: px2rem(90);
-        background-color: #2E963D;
+        background-color: $main-color;
         position: fixed;
         display: flex;
         justify-content: space-between;
@@ -147,7 +147,7 @@ export default {
     }
     .search-con {
         height: px2rem(90);
-        background-color: #2E963D;
+        background-color: $main-color;
         display: flex;
         justify-content: space-between;
         align-items: center;

@@ -160,14 +160,14 @@ export default {
         padding: px2rem(50) 0;
         text-align: center;
         //background-color: #2E963D;
-        background: -webkit-gradient(linear, 0 0, 0 bottom, from(#2E963D), to(white));  
+        background: -webkit-gradient(linear, 0 0, 0 bottom, from($main-color), to(white));  
         line-height: 0 /*img bottom 1px bug*/;
         img {
             //display: inline-block;
         }
     }
     .detail-info {
-        background-color: #eeeeee;
+        background-color: $line-color;
         box-shadow: -1px -5px 10px #888888;
         padding: px2rem(30) px2rem(20);
         position: relative;
@@ -196,17 +196,17 @@ export default {
                 @include font-dpr(12px);
             }
             .rate-result {
-                color: #333333;
+                color: $minor-color;
                 @include font-dpr(18px);
             }
         }
         .detail-text-middle {
             @include font-dpr(14px);
-            color: #333333;
+            color: $minor-color;
         }
         .detail-text-small {
             @include font-dpr(12px);
-            color: #333333;
+            color: $minor-color;
         }
         .cast-con {
             display: flex;
@@ -286,7 +286,7 @@ export default {
                 }
             }
             .more-comments-text {
-                color: #2E963D;
+                color: $main-color;
                 text-align: center;
                 margin-bottom: 0;
             }

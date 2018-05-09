@@ -98,6 +98,7 @@ export default {
         ...mapState({
             name: state => state.home.name,
             hIsLoading: state => state.home.hIsLoading,
+            sIsLoading: state => state.home.sIsLoading,
             carouselList: state => state.home.carouselList,
             hotList: state => state.home.hotList,
             soonList: state => state.home.soonList
@@ -136,17 +137,13 @@ export default {
         //         path: '/search_result'
         //     })
         // },
-        requestHotMovie() {
-            server.requestHotMovie(true, false);
+        requestHotMovie: server.requestHotMovie,
             // console.log(getDataByServer)
             // getDataByServer(urls.SERVER_BASE + urls.HOT_MOVIE, null).then(res => console.log(res))
             // this.$store.dispatch({
             //     type: types.GET_HOT
             // })
-        },
-        requestSoonMovie(successBK, errorBK) {
-            server.requestSoonMovie(true, successBK, errorBK);
-        },
+        requestSoonMovie: server.requestSoonMovie,
         gotoDetail(id) {
             this.$router.push({
                 path: '/moviedetail/' + id
@@ -158,7 +155,7 @@ export default {
     },
     mounted() {
         this.requestHotMovie();
-        this.requestSoonMovie(null, e => console.log(e));
+        this.requestSoonMovie();
     },
     components: {
         swiper,
@@ -197,7 +194,7 @@ export default {
         margin: px2rem(110) auto 0 auto;
         //height: px2rem(400);
         border-radius: px2rem(15);
-        background-color: #2E963D;
+        background-color: $main-color;
         padding: px2rem(25);
         display: flex;
         > img {

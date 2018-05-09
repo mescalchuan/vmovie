@@ -2,9 +2,7 @@ import {homeMutation} from '../mutations';
 import {homeAction} from '../actions';
 
 const state = {
-    name: 'qinchuan',
     hIsLoading: true,
-    isRefreshing: false,
     sIsLoading: true,
     carouselList: [],
     hotList: [],

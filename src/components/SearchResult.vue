@@ -43,7 +43,7 @@ export default {
             console.log(this.type);
             console.log(this.$refs.movieList.start)
             this.$refs.movieList.start = 20;
-            server.requestMovieList(MOVIE_LIST_TYPE.SEARCH, true, this.searchWords, this.type)
+            server.requestMovieList(MOVIE_LIST_TYPE.SEARCH, this.searchWords, this.type)
         }
     },
     beforeMount() {

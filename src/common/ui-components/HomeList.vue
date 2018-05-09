@@ -65,7 +65,7 @@ export default {
             position: absolute;
             bottom: 0;
             width: 100%;
-            background-color: #2E963D;
+            background-color: $main-color;
             padding: px2rem(10) 0;
             text-align: center;
             p {

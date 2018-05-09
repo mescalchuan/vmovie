@@ -3,7 +3,7 @@
         <Header title="北美票房榜"/>
         <Loading :isShow="isLoading"/>
         <div v-if="!isLoading" class="movie-list">
-            <div class="list-con" v-for="(item, index) in list" :key="index">
+            <div class="list-con" v-for="(item, index) in list" :key="index" @click="gotoDetail(item.subject.id)">
                 <img :src="item.subject.images.medium" alt="carousel.jpg">
                 <div class="movie-info">
                     <p class="movie-title">{{item.subject.title}}</p>
@@ -46,14 +46,12 @@ export default {
         })
     },
     methods: {
-        requestNA() {
-            server.requestNA(true);
-            // console.log(getDataByServer)
-            // getDataByServer(urls.SERVER_BASE + urls.HOT_MOVIE, null).then(res => console.log(res))
-            // this.$store.dispatch({
-            //     type: types.GET_HOT
-            // })
-        }
+        gotoDetail(id) {
+            this.$router.push({
+                path: '/moviedetail/' + id
+            })
+        },
+        requestNA: server.requestNA,
     },
     mounted() {
         this.requestNA();
@@ -71,7 +69,7 @@ export default {
         box-sizing: border-box;
         margin: px2rem(10) auto 0 auto;
         //height: px2rem(400);
-        background-color: #eeeeee;
+        background-color: $line-color;
         padding: px2rem(25);
         display: flex;
         align-items: center;

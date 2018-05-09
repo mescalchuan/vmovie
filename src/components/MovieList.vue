@@ -2,9 +2,8 @@
     <div style="overflow:hidden">
         <Header :title="getListTitle"/>
         <Loading :isShow="isLoading"/>
-        <div v-if="!isLoading" class="movie-list">
-            
-            <div class="list-con" v-for="(item, index) in movieData.subjects" :key="index">
+        <div v-if="!isLoading" class="movie-list">        
+            <div class="list-con" v-for="(item, index) in movieData.subjects" :key="index" @click="gotoDetail(item.id)">
                 <img :src="item.images.medium" alt="carousel.jpg">
                 <div class="movie-info">
                     <p class="movie-title">{{item.title}}</p>
@@ -39,12 +38,13 @@ import * as server from '@/server/movie_list_server';
 import Loading from '@/common/ui-components/Loading';
 import Star from '@/common/ui-components/Star';
 
-const requestMovieList = (self) => {
-    const path = self.$route.path;
+const requestMovieList = (self, route) => {
+    const path = route.path;
     const urlList = path.split('/');
-    const {tag, q} = (self.isDynamic ? self.dynamicInfo : self.$route.query); 
+    const {tag, q} = (self.isDynamic ? self.dynamicInfo : route.query); 
     const searchKey = tag ? tag : q;
     const searchType = tag ? 'tag' : 'q';
+    console.log(urlList[urlList.length - 1])
     self.requestMovieList(urlList[urlList.length - 1], searchKey, searchType);
 }
 
@@ -117,21 +117,16 @@ export default {
         })
     },
     methods: {
-        requestMovieList(type, searchKey, searchType) {
-            server.requestMovieList(type, true, searchKey, searchType);
-            // console.log(getDataByServer)
-            // getDataByServer(urls.SERVER_BASE + urls.HOT_MOVIE, null).then(res => console.log(res))
-            // this.$store.dispatch({
-            //     type: types.GET_HOT
-            // })
+        gotoDetail(id) {
+            this.$router.push({
+                path: '/moviedetail/' + id
+            })
         },
+        requestMovieList: server.requestMovieList,
         requestMoreList(start, q, type) {
             server.requestMoreList(start, q, type)
             .then(() => {
                 this.start += this.movieData.count;
-                console.log(this.movieData.start)
-                console.log(this.movieData.subjects.length)
-                console.log('succeed')
             })
         }
     },
@@ -142,10 +137,10 @@ export default {
         // const searchKey = tag ? tag : q;
         // const searchType = tag ? 'tag' : 'q';
         // this.requestMovieList(urlList[urlList.length - 1], searchKey, searchType);
-        requestMovieList(this);
+        requestMovieList(this, this.$route);
     },
     beforeRouteUpdate (to, from, next) {
-        requestMovieList(this);
+        requestMovieList(this, to);
         // don't forget to call next()
         next();
     }
@@ -162,7 +157,7 @@ export default {
         box-sizing: border-box;
         margin: px2rem(10) auto 0 auto;
         //height: px2rem(400);
-        background-color: #eeeeee;
+        background-color: $line-color;
         padding: px2rem(25);
         display: flex;
         align-items: center;
@@ -201,7 +196,7 @@ export default {
     .more-list-text {
             @include font-dpr(16px);
             margin-top: px2rem(5);
-            color: #2E963D;
+            color: $main-color;
             text-align: center;
         }
     .margin-bottom-20 {

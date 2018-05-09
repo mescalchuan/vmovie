@@ -2,7 +2,6 @@ import {movieListMutation} from '../mutations';
 
 const state = {
     isLoading: true,
-    isRefreshing: false,
     gettingMore: false,
     movieData: {} 
 }

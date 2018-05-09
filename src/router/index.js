@@ -1,6 +1,5 @@
  import Vue from 'vue'
 import VueRouter from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
 import Main from '@/components/Main'
 const Home = () => import('@/components/Home')
 const MovieList = () => import('@/components/MovieList')

@@ -46,14 +46,7 @@ export default {
         })
     },
     methods: {
-        requestWordMouth() {
-            server.requestWordMouth(true);
-            // console.log(getDataByServer)
-            // getDataByServer(urls.SERVER_BASE + urls.HOT_MOVIE, null).then(res => console.log(res))
-            // this.$store.dispatch({
-            //     type: types.GET_HOT
-            // })
-        }
+        requestWordMouth: server.requestWordMouth
     },
     mounted() {
         this.requestWordMouth();
@@ -71,7 +64,7 @@ export default {
         box-sizing: border-box;
         margin: px2rem(10) auto 0 auto;
         //height: px2rem(400);
-        background-color: #eeeeee;
+        background-color: $line-color;
         padding: px2rem(25);
         display: flex;
         align-items: center;

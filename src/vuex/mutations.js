@@ -5,9 +5,8 @@ export const homeMutation = {
     [types.CHANGE_NAME](state, payload) {
         state.name = payload.name;
     },
-    [types.REQUEST_HOT](state, {isLoading, isRefreshing}) {
-        state.hIsLoading = isLoading;
-        state.isRefreshing = isRefreshing;
+    [types.REQUEST_HOT](state) {
+        state.hIsLoading = true;
     },
     [types.GET_HOT](state, {hotData}) {
         const subjects = hotData.subjects;
@@ -16,13 +15,12 @@ export const homeMutation = {
         console.log(carouselList)
         //state = {...{carouselList, hotList, isLoading: false, isRefreshing: false}};
         state.hIsLoading = false;
-        state.isRefreshing = false;
         state.hotList = hotList;
         state.carouselList = carouselList;
         // state.hotData = hotData;S
     },
-    [types.REQUEST_SOON](state, {isLoading}) {
-        state.sIsLoading = isLoading;
+    [types.REQUEST_SOON](state) {
+        state.sIsLoading = true;
     },
     [types.GET_SOON](state, {soonData}) {
         const subjects = soonData.subjects;
@@ -40,8 +38,8 @@ export const homeMutation = {
 }
 
 export const movieListMutation = {
-    [types.REQUEST_LIST_BY_TYPE](state, {isLoading}) {
-        state.isLoading = isLoading;
+    [types.REQUEST_LIST_BY_TYPE](state) {
+        state.isLoading = true;
     },
     [types.GET_LIST_BY_TYPE](state, {listData}) {
         state.movieData = listData;
@@ -63,9 +61,8 @@ export const movieListMutation = {
 }
 
 export const wordMouthMutation = {
-    [types.REQUEST_WORD_MOUTH_LIST](state, {isLoading}) {
-        console.log('get')
-        state.isLoading = isLoading;
+    [types.REQUEST_WORD_MOUTH_LIST](state) {
+        state.isLoading = true;
     },
     [types.GET_WORD_MOUTH_LIST](state, {listData}) {
         console.log(listData)
@@ -76,9 +73,9 @@ export const wordMouthMutation = {
 }
 
 export const NAMutation = {
-    [types.REQUEST_NA_LIST](state, {isLoading}) {
+    [types.REQUEST_NA_LIST](state) {
         console.log('get')
-        state.isLoading = isLoading;
+        state.isLoading = true;
     },
     [types.GET_NA_LIST](state, {listData}) {
         console.log(listData)

@@ -21,7 +21,7 @@ export default {
 .app-header {
     width: 100vw;
     height: px2rem(90);
-    background-color: #2E963D;
+    background-color: $main-color;
     text-align: center;
     line-height: px2rem(90);
     position: fixed;

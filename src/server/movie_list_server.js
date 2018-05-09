@@ -31,8 +31,8 @@ const getUrlByType = (type, searchKey, searchType) => {
     return url;
 }
 
-export const requestMovieList = (type, isLoading, searchKey, searchType) => {
-    store.commit({type: types.REQUEST_LIST_BY_TYPE, isLoading});
+export const requestMovieList = (type, searchKey, searchType) => {
+    store.commit({type: types.REQUEST_LIST_BY_TYPE});
     getDataByServer(getUrlByType(type, searchKey, searchType), null).then(res => {
         console.log(res);
         store.commit({type: types.GET_LIST_BY_TYPE, listData: res});
