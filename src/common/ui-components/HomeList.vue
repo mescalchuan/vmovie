@@ -15,6 +15,7 @@
 </template>
 
 <script>
+/* 首页正在热映和即将上映列表组件 */
 import Star from '@/common/ui-components/Star';
 export default {
     name: 'HomeList',
@@ -53,7 +54,7 @@ export default {
     flex-wrap: wrap;
     margin: -0.26667rem 0.26667rem 0 0.26667rem;
     .list-con {
-        width: 30vw;//px2rem(225);
+        width: px2rem(225);
         height: px2rem(315);
         margin-top: px2rem(20);
         position: relative;
@@ -81,16 +82,6 @@ export default {
 .panel {
     margin: px2rem(30);
     @include font-dpr(15px);
-}
-@media screen and (min-width: 1536px) and (max-width: 2731px) {
-    .list-con {
-        width: 20vw !important;
-    }
-}
-@media screen and (min-width: 2732px) {
-    .list-con {
-        width: 10vw !important;
-    }
 }
 </style>
 

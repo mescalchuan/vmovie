@@ -12,26 +12,16 @@ export const homeMutation = {
         const subjects = hotData.subjects;
         const carouselList = subjects.slice(0, 5);
         const hotList = subjects.slice(5, 17);
-        console.log(carouselList)
-        //state = {...{carouselList, hotList, isLoading: false, isRefreshing: false}};
         state.hIsLoading = false;
         state.hotList = hotList;
         state.carouselList = carouselList;
-        // state.hotData = hotData;S
     },
     [types.REQUEST_SOON](state) {
         state.sIsLoading = true;
     },
     [types.GET_SOON](state, {soonData}) {
         const subjects = soonData.subjects;
-        console.log(soonData.subjects)
         let soonList = subjects.slice(0, 12)
-        console.log(soonList.length);
-        // if(soonList.length % 3 != 0) {
-        //     for(let i = 0; i < soonList.length % 3; i++) {
-        //         soonList.push({});
-        //     }
-        // }
         state.sIsLoading = false;
         state.soonList = soonList;
     }
@@ -43,7 +33,6 @@ export const movieListMutation = {
     },
     [types.GET_LIST_BY_TYPE](state, {listData}) {
         state.movieData = listData;
-        console.log(listData.subjects);
         state.isLoading = false;
     },
     [types.REQUEST_MORE_BY_TYPE](state) {
@@ -56,7 +45,6 @@ export const movieListMutation = {
         _movieData.total = listData.total;
         state.movieData = _movieData;
         state.gettingMore = false;
-        console.log(state.movieData);
     }
 }
 
@@ -65,22 +53,17 @@ export const wordMouthMutation = {
         state.isLoading = true;
     },
     [types.GET_WORD_MOUTH_LIST](state, {listData}) {
-        console.log(listData)
         state.list = listData.subjects;
-        console.log(listData.subjects);
         state.isLoading = false;
     }
 }
 
 export const NAMutation = {
     [types.REQUEST_NA_LIST](state) {
-        console.log('get')
         state.isLoading = true;
     },
     [types.GET_NA_LIST](state, {listData}) {
-        console.log(listData)
         state.list = listData.subjects;
-        console.log(listData.subjects);
         state.isLoading = false;
     }
 }
@@ -90,17 +73,9 @@ export const movieDetailMutation = {
         state.isLoading = true;
     },
     [types.GET_MOVIE_DETAIL](state, {detail}) {
-        console.log(detail);
         state.detail = detail;
     },
     [types.GET_MOVIE_PHOTOS](state, {photos}) {
-        // !state.detail.photos && (state.detail.photos = {photos: []});
-        // let _photos = utils.clone(state.detail.photos);
-        // //!_photos && (_photos = {});
-        // _photos.photos = _photos.photos.concat(photos.photos);
-        // console.log(photos);
-        // state.detail.photos = _photos;
-
         let _detail = utils.clone(state.detail);
         _detail.photos = photos;
         state.detail = _detail;
@@ -116,16 +91,12 @@ export const movieDetailMutation = {
     },
     [types.GET_MORE_SHORT_COMMENTS](state, {comments}) {
         let _shortComments = utils.clone(state.detail.shortComments);
-        console.log(comments);
-        console.log('----------------');
-        console.log(state.detail.shortComments)
         _shortComments.start = comments.start;
         _shortComments.count += comments.count;
         _shortComments.next_start = comments.next_start;
         _shortComments.comments = _shortComments.comments.concat(comments.comments);
         state.detail.shortComments = _shortComments;
         state.gettingMore = false;
-        console.log(state.detail);
     },
     [types.CLEAR_DETAIL](state) {
         state.detail = {};

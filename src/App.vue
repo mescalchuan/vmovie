@@ -16,8 +16,8 @@ export default {
 
 <style lang="scss">
 @font-face {
-  font-family: "Ionicons";
-  src: url("./fonts/Ionicons.ttf");
-  font-style: italic;
+    font-family: "Ionicons";
+    src: url("./fonts/Ionicons.ttf");
+    font-style: italic;
 }
 </style>

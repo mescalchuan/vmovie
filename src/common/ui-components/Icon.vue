@@ -3,6 +3,7 @@
 </template>
 
 <script>
+/* 图标组件->基于Ionicons */
 import utils from "@/common/utils.js";
 import IconMap from "@/common/iconMap.json";
 

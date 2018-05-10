@@ -5,6 +5,7 @@
 </template>
 
 <script>
+/* 页面加载中组件 */
 export default {
     name: 'Loading',
     props: {

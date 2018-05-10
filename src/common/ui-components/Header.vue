@@ -5,6 +5,7 @@
 </template>
 
 <script>
+/* 头部导航组件 */
 export default {
     name: 'Header',
     props: {
@@ -25,6 +26,7 @@ export default {
     text-align: center;
     line-height: px2rem(90);
     position: fixed;
+    top: 0;
     h1 {
         @include font-dpr(18px);
         color: white;

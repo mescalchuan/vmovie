@@ -22,7 +22,7 @@
                 <p class="detail-text-middle margin-top-25">演员</p>
                 <div class="cast-con margin-top-25">
                     <div class="cast-list" v-for="(cast, cIndex) in detail.casts" :key="cIndex">
-                        <img :src="cast.avatars.medium" alt="cast.alt">
+                        <img :src="cast.avatars && cast.avatars.medium" :alt="cast.avatars && cast.avatars.alt">
                         <p class="detail-text">{{cast.name}}</p>
                     </div>
                 </div>
@@ -59,8 +59,8 @@
                             <p class="detail-text-small margin-top-10" style="text-align:right">{{comment.created_at}}</p>
                         </div>
                     </div>
-                    <p class="detail-title more-comments-text" v-if="!gettingMore && detail.shortComments.next_start < detail.shortComments.total" @click="requestMoreShortComments($route.params.id, detail.shortComments.next_start)">加载更多评论</p>
-                    <p class="detail-title more-comments-text" v-else-if="!gettingMore && detail.shortComments.next_start >= detail.shortComments.total">已加载全部评论</p>
+                    <p class="detail-title more-comments-text" v-if="!gettingMore && detail.shortComments.comments.length < detail.shortComments.total" @click="requestMoreShortComments($route.params.id, detail.shortComments.next_start)">加载更多评论</p>
+                    <p class="detail-title more-comments-text" v-else-if="!gettingMore && detail.shortComments.comments.length >= detail.shortComments.total">已加载全部评论</p>
                     <p class="detail-title more-comments-text" v-else>加载中.....</p>
                 </div>
             </div>
@@ -79,15 +79,12 @@
 
 <script>
 import { swiper, swiperSlide } from 'vue-awesome-swiper';
-import Header from '@/common/ui-components/Header';
 import {mapState, mapMutations} from 'vuex';
 import * as server from '@/server/movie_detail_server';
-import {CLEAR_DETAIL} from '@/vuex/types';
 import Loading from '@/common/ui-components/Loading';
 import Star from '@/common/ui-components/Star';
 import Icon from '@/common/ui-components/Icon';
 import Modal from '@/common/ui-components/Modal';
-import utils from '@/common/utils';
 import 'swiper/dist/css/swiper.min.css';
 
 export default {
@@ -108,7 +105,7 @@ export default {
                     // }
                 },
                 initialSlide: 0,
-                
+
             }
         }
     },
@@ -122,7 +119,11 @@ export default {
     methods: {
         requestMovieDetail: server.requestMovieDetail,
         requestMoviePhotos: server.requestMoviePhotos,
-        requestMoreShortComments: server.requestMoreShortComments,
+        requestMoreShortComments(id, start) {
+            server.requestMoreShortComments(id, start)
+            .then(null, err => console.log(err))
+            .catch(err => console.log(err))
+        },
         requestMovieShortComments: server.requestMovieShortComments,
         showModal(index) {
             this.swiperOption.initialSlide = index;
@@ -130,16 +131,13 @@ export default {
         },
         closeModal() {
             this.modalShow = false;
-        },
-        ...mapMutations({
-            clearDetail: CLEAR_DETAIL
-        })
+        }
     },
     mounted() {
         this.requestMovieDetail(this.$route.params.id)
         .then(() => this.requestMoviePhotos(this.$route.params.id, 0))
         .then(() => this.requestMovieShortComments(this.$route.params.id, 0))
-        .then(() => console.log(this.detail));
+        .catch(err => console.log(err))
     },
     components: {
         Loading,
@@ -159,12 +157,8 @@ export default {
     .detail-main-img {
         padding: px2rem(50) 0;
         text-align: center;
-        //background-color: #2E963D;
-        background: -webkit-gradient(linear, 0 0, 0 bottom, from($main-color), to(white));  
+        background: -webkit-gradient(linear, 0 0, 0 bottom, from($main-color), to(white));
         line-height: 0 /*img bottom 1px bug*/;
-        img {
-            //display: inline-block;
-        }
     }
     .detail-info {
         background-color: $line-color;

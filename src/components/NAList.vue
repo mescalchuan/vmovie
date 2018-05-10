@@ -27,7 +27,7 @@
 
 <script>
 import Header from '@/common/ui-components/Header';
-import {mapState, mapMutations} from 'vuex';
+import {mapState} from 'vuex';
 import * as server from '@/server/na_server';
 import Loading from '@/common/ui-components/Loading';
 import Star from '@/common/ui-components/Star';
@@ -54,7 +54,9 @@ export default {
         requestNA: server.requestNA,
     },
     mounted() {
-        this.requestNA();
+        this.requestNA()
+        .then(null, err => console.log(err))
+        .catch(err => console.log(err));
     }
 }
 </script>
@@ -62,4 +64,3 @@ export default {
 <style lang="scss" scoped>
 @import '../common/list';
 </style>
-

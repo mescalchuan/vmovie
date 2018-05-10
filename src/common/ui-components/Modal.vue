@@ -5,6 +5,7 @@
 </template>
 
 <script>
+/* 弹出框组件 */
 export default {
     name: 'Modal',
     props: {
@@ -18,9 +19,11 @@ export default {
         }
     },
     mounted() {
+        //弹层出现后禁止外部滚动
         document.documentElement.style.overflow = 'hidden';
     },
     beforeDestroy() {
+        //恢复滚动
         document.documentElement.style.overflow = 'visible';
     }
 }

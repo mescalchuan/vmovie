@@ -2,7 +2,7 @@
     <div style="overflow:hidden">
         <Header :title="getListTitle"/>
         <Loading :isShow="isLoading"/>
-        <div v-if="!isLoading" class="movie-list">        
+        <div v-if="!isLoading" class="movie-list">
             <div class="list-con" v-for="(item, index) in movieData.subjects" :key="index" @click="gotoDetail(item.id)">
                 <img :src="item.images.medium" alt="carousel.jpg">
                 <div class="movie-info">
@@ -22,8 +22,8 @@
                 </div>
             </div>
             <div v-if="getListTitle == 'Top250' || getListTitle == 'Search'" :class="{'margin-bottom-20': isDynamic}">
-                <p class="more-list-text" v-if="!gettingMore && start < movieData.total" @click="requestMoreList(start, getSearchReqInfo.searchKey, getSearchReqInfo.searchType)">加载更多</p>
-                <p class="more-list-text" v-else-if="!gettingMore && start >= movieData.total">已加载全部</p>
+                <p class="more-list-text" v-if="!gettingMore && movieData.subjects.length < movieData.total" @click="requestMoreList(start, getSearchReqInfo.searchKey, getSearchReqInfo.searchType)">加载更多</p>
+                <p class="more-list-text" v-else-if="!gettingMore && movieData.subjects.length >= movieData.total">已加载全部</p>
                 <p class="more-list-text" v-else>加载中.....</p>
             </div>
         </div>
@@ -32,7 +32,7 @@
 
 <script>
 import Header from '@/common/ui-components/Header';
-import {mapState, mapMutations} from 'vuex';
+import {mapState} from 'vuex';
 import {MOVIE_LIST_TYPE} from '@/common/config';
 import * as server from '@/server/movie_list_server';
 import Loading from '@/common/ui-components/Loading';
@@ -41,11 +41,10 @@ import Star from '@/common/ui-components/Star';
 const requestMovieList = (self, route) => {
     const path = route.path;
     const urlList = path.split('/');
-    const {tag, q} = (self.isDynamic ? self.dynamicInfo : route.query); 
+    const {tag, q} = (self.isDynamic ? self.dynamicInfo : route.query);
     const searchKey = tag ? tag : q;
     const searchType = tag ? 'tag' : 'q';
-    console.log(urlList[urlList.length - 1])
-    self.requestMovieList(urlList[urlList.length - 1], searchKey, searchType);
+    self.requestMovieList(urlList[urlList.length - 1], searchKey, searchType)
 }
 
 export default {
@@ -71,26 +70,11 @@ export default {
             default: {}
         }
     },
-    // props: {
-    //     searchWords: {
-    //         type: String,
-    //         default: ''
-    //     },
-    //     searchTag: {
-    //         type: String,
-    //         default: ''
-    //     }
-    // },
     computed: {
         getSearchReqInfo() {
-            console.log(111);
-            console.log(this.dynamicInfo)
             const {tag, q} = (this.isDynamic ? this.dynamicInfo : this.$route.query);
             const searchKey = tag ? tag : q;
             const searchType = tag ? 'tag' : 'q';
-            console.log({
-                searchKey, searchType
-            })
             return {
                 searchKey,
                 searchType
@@ -106,7 +90,7 @@ export default {
                     return '新片榜';
                 case MOVIE_LIST_TYPE.SEARCH:
                     return 'Search';
-                default: 
+                default:
                     return '';
             }
         },
@@ -127,16 +111,11 @@ export default {
             server.requestMoreList(start, q, type)
             .then(() => {
                 this.start += this.movieData.count;
-            })
+            }, err => console.log(err))
+            .catch(err => console.log(err))
         }
     },
     mounted() {
-        // const path = this.$route.path;
-        // const urlList = path.split('/');
-        // const {tag, q} = (this.isDynamic ? this.dynamicInfo : this.$route.query); 
-        // const searchKey = tag ? tag : q;
-        // const searchType = tag ? 'tag' : 'q';
-        // this.requestMovieList(urlList[urlList.length - 1], searchKey, searchType);
         requestMovieList(this, this.$route);
     },
     beforeRouteUpdate (to, from, next) {
@@ -156,4 +135,3 @@ export default {
     text-align: center;
 }
 </style>
-

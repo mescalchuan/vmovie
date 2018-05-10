@@ -1,4 +1,4 @@
-export const SERVER_BASE = '/api/'/*开发环境跨域，使用proxy代理，位于@/config/index.js*/ //'https://api.douban.com/';
+export const SERVER_BASE = 'https://api.douban.com/' /*'/api/'*/   /*开发环境跨域，使用proxy代理，位于@/config/index.js*/ //'https://api.douban.com/';
 
 export const HOT_MOVIE = 'v2/movie/in_theaters';
 
@@ -18,8 +18,6 @@ export const SEARCH_BY_WORDS = 'v2/movie/search';
 
 export const MOVIE_LIST_TYPE = {
     TOP250: 'top250',
-    WORD_MOUTH: 'wordmouth',
-    NORTH_AMERICA: 'na',
     NEW: 'new',
     SEARCH: 'search_result'
 }

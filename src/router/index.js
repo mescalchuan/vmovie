@@ -1,4 +1,4 @@
- import Vue from 'vue'
+import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Main from '@/components/Main'
 const Home = () => import('@/components/Home')
@@ -25,8 +25,8 @@ export default new VueRouter({
         path: 'home',
         name: 'home',
         component: Home,
-        meta: { 
-          keepAlive: true 
+        meta: {
+          keepAlive: true
         }
       },{
         path: 'list/:type',

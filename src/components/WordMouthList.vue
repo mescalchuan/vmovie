@@ -3,7 +3,7 @@
         <Header title="口碑榜"/>
         <Loading :isShow="isLoading"/>
         <div v-if="!isLoading" class="movie-list">
-            <div class="list-con" v-for="(item, index) in list" :key="index">
+            <div class="list-con" v-for="(item, index) in list" :key="index" @click="gotoDetail(item.subject.id)">
                 <img :src="item.subject.images.medium" alt="carousel.jpg">
                 <div class="movie-info">
                     <p class="movie-title">{{item.subject.title}}</p>
@@ -27,7 +27,7 @@
 
 <script>
 import Header from '@/common/ui-components/Header';
-import {mapState, mapMutations} from 'vuex';
+import {mapState} from 'vuex';
 import * as server from '@/server/word_mouth_server';
 import Loading from '@/common/ui-components/Loading';
 import Star from '@/common/ui-components/Star';
@@ -46,10 +46,18 @@ export default {
         })
     },
     methods: {
+        gotoDetail(id) {
+            this.$router.push({
+                path: '/moviedetail/' + id
+            })
+        },
         requestWordMouth: server.requestWordMouth
     },
     mounted() {
-        this.requestWordMouth();
+        this.requestWordMouth().then(null, err => {
+            console.log(err);
+        })
+        .catch(err => console.log(err));
     }
 }
 </script>
@@ -57,4 +65,3 @@ export default {
 <style lang="scss" scoped>
 @import '../common/list';
 </style>
-

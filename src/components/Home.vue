@@ -2,11 +2,6 @@
     <div class="home-con">
         <Loading :isShow="hIsLoading || sIsLoading"/>
         <div v-if="!hIsLoading && !sIsLoading">
-            <!-- <div class="app-header">
-                <div class="app-search" @click="showModal">
-                    <Icon :size="30" name="ios-alarm" color="blue"/>
-                </div>
-            </div> -->
             <Search @newWords="changeWords" :searchWords="searchWords" :submit="searchByWords"/>
             <swiper :options="swiperOption" ref="mySwiper">
                 <swiper-slide v-for="(item, index) in carouselList" :key="index">
@@ -34,39 +29,26 @@
             <home-list title="正在热映" :list="hotList" :listLeft="hotListLeft"/>
             <home-list title="即将上映" :list="soonList" :listLeft="soonListLeft"/>
         </div>
-        <!-- <Modal v-if="modalShow" backgroundColor="white">
-            <div class="search-con">
-                <div @click="closeModal">
-                    <Icon name="ios-arrow-back" color="white" size="25"/>
-                </div>
-                <div class="input-con">
-                    <input type="text" v-model="searchWords"/>  
-                    <div @click="searchByWord">
-                        <Icon name="ios-search-outline" color="#333333" size="25"/>
-                    </div>
-                </div>  
-                <Icon name="ios-search-outline" color="transparent" size="25"/>
-            </div>
-        </Modal>    -->
     </div>
 </template>
 
 <script>
 import { swiper, swiperSlide } from 'vue-awesome-swiper';
-import {mapState, mapMutations, mapActions} from 'vuex';
+import {mapState} from 'vuex';
 import * as server from '@/server/home_server';
 import Loading from '@/common/ui-components/Loading';
 import Star from '@/common/ui-components/Star';
 import HomeList from '@/common/ui-components/HomeList';
 import Search from '@/common/ui-components/Search';
 import {TAG} from '@/common/config';
-// import Modal from '@/common/ui-components/Modal';
-// import Icon from '@/common/ui-components/Icon';
 import 'swiper/dist/css/swiper.css';
 
+//计算出homeList每一行的最大列数，返回最后一行需要填补的空白数量
 const listLeft = (list) => {
-    const lastColCount = list.length % 3;
-    const additionCount = lastColCount == 0 ? 0 : 3 - lastColCount;
+    const fontSize = document.documentElement.style.fontSize;
+    const columns = Math.floor((document.body.clientWidth - 0.266673 * parseInt(fontSize)) / (3 * parseInt(fontSize)));
+    const lastColCount = list.length % columns;
+    const additionCount = lastColCount == 0 ? 0 : columns - lastColCount;
     return new Array(additionCount);
 }
 export default {
@@ -74,11 +56,11 @@ export default {
     data() {
         return {
             searchWords: '',
-            // modalShow: false,
-            // searchWords: '',
             swiperOption: {
                 loop: true,
-                autoplay: false,
+                autoplay: {
+                    disableOnInteraction: false,
+                },
                 pagination: {
                     el: '.swiper-pagination'
                 }
@@ -87,9 +69,6 @@ export default {
     },
     computed: {
         soonListLeft() {
-            // const lastColCount = this.soonList.length % 3;
-            // const additionCount = lastColCount == 0 ? 0 : 3 - lastColCount;
-            // return new Array(additionCount);
             return listLeft(this.soonList);
         },
         hotListLeft() {
@@ -105,60 +84,30 @@ export default {
         })
     },
     methods: {
-        changeName() {
-            this.$store.dispatch({
-                type: types.CHANGE_NAME,
-                name: "123456"
-            })
-        },
         changeWords(nv) {
-            console.log(nv);
             this.searchWords = nv;
         },
         searchByWords() {
-            const queryKey = !!(~TAG.indexOf(this.searchWords)) ? 'tag' : 'q'; 
+            const queryKey = !!(~TAG.indexOf(this.searchWords)) ? 'tag' : 'q';
             this.$router.push({
                 path: '/search_result',
                 query: {
                     [queryKey]: this.searchWords
                 }
             })
-            console.log(this.searchWords)
         },
-        // showModal() {
-        //     this.modalShow = true;
-        // },
-        // closeModal() {
-        //     this.modalShow = false;
-        // },
-        // searchByWord() {
-        //     console.log(this.searchWords)
-        //     this.$router.push({
-        //         path: '/search_result'
-        //     })
-        // },
         requestHotMovie: server.requestHotMovie,
-            // console.log(getDataByServer)
-            // getDataByServer(urls.SERVER_BASE + urls.HOT_MOVIE, null).then(res => console.log(res))
-            // this.$store.dispatch({
-            //     type: types.GET_HOT
-            // })
         requestSoonMovie: server.requestSoonMovie,
         gotoDetail(id) {
             this.$router.push({
                 path: '/moviedetail/' + id
             })
-        },
-        ...mapMutations({
-        //changeName: types.CHANGE_NAME
-        })
+        }
     },
     mounted() {
-        Promise.all([this.requestHotMovie, this.requestSoonMovie])
-        .then(() => {}, err => console.log(err))
+        Promise.all([this.requestHotMovie(), this.requestSoonMovie()])
+        .then(null, err => console.log(err))
         .catch(err => console.log(err));
-        // this.requestHotMovie();
-        // this.requestSoonMovie();
     },
     components: {
         swiper,
@@ -167,8 +116,6 @@ export default {
         Star,
         HomeList,
         Search
-        //Modal,
-        //Icon
     }
 }
 </script>
@@ -176,26 +123,10 @@ export default {
 <style lang='scss'>
 @import '../common/basic';
 .home-con {
-    // .app-header {
-    //     height: px2rem(90);
-    //     background-color: $main-color;
-    //     position: fixed;
-    //     display: flex;
-    //     justify-content: center;
-    //     align-items: center;
-    //     z-index: 2;
-    //     width: 100vw;
-    //     .app-search {
-    //         width: 50vw;
-    //         height: 60%;
-    //         background-color: white;
-    //     }
-    // }
     .carousel-con {
         width: 95vw;
         box-sizing: border-box;
         margin: px2rem(110) auto 0 auto;
-        //height: px2rem(400);
         border-radius: px2rem(15);
         background-color: $main-color;
         padding: px2rem(25);
@@ -234,7 +165,7 @@ export default {
                 span {
                     white-space: pre-nowrap;
                 }
-            } 
+            }
             .movie-rating {
                 margin-top: px2rem(10);
             }
@@ -250,45 +181,7 @@ export default {
         background: #FFD716;
     }
     .swiper-pagination-bullets {
-        //bottom: px2rem(20);
-        //margin-right: px2rem(20);
-        //text-align: right;
         position: static;
     }
-    // .search-con {
-    //     height: px2rem(90);
-    //     background-color: #2E963D;
-    //     display: flex;
-    //     justify-content: space-between;
-    //     align-items: center;
-    //     padding: 0 px2rem(20);
-    //     .input-con {
-    //         height: px2rem(50);
-    //         display: flex;
-    //         align-items: center;
-    //         box-sizing: border-box;
-    //         border-radius: px2rem(10);
-    //         padding: 0 px2rem(10);
-    //         // line-height: px2rem(40);
-    //         background-color: white;
-    //         input {
-    //             height: px2rem(50);
-    //             border: 0;
-    //             @include font-dpr(15px);
-    //         }
-    //     }   
-    // }
-    // @media screen and (max-width: 320px) and (min-resolution : 2dppx) {
-    //     .movie-title {
-    //         @include font-dpr(15px);
-    //     }  
-    // }
-    // @media screen and (min-width: 1536px) {
-    //     .list-con {
-    //         width: 20vw !important;
-    //     }
-    // }
 }
 </style>
-
-

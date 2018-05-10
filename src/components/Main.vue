@@ -27,7 +27,6 @@
 </template>
 
 <script>
-import * as types from "@/vuex/types";
 import Icon from '@/common/ui-components/Icon';
 
 const changeTab = self => {
@@ -67,8 +66,6 @@ export default {
                 default:
                 break;
             }
-            //const path = name === 'home' ? '/home' : '/list/' + name;
-            
             this.$router.push({
                 path
             })

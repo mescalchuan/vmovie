@@ -36,6 +36,7 @@
 </template>
 
 <script>
+/* 搜索框组件 */
 import Modal from './Modal';
 import Icon from './Icon';
 import {TAG, TAG_ICON} from '../config';
@@ -86,15 +87,6 @@ export default {
             this.submit();
             this.autoClose && this.closeModal();
         }
-        // searchByWord() {
-        //     console.log(this.searchWords)
-        //     this.$router.push({
-        //         path: '/search_result'
-        //     })
-        // },
-    },
-    mounted() {
-        console.log(this.searchWords)
     },
     watch: {
         searchWords(nv, ov) {
@@ -106,7 +98,6 @@ export default {
                 this.$nextTick(() => {
                     this.$refs.input.focus();
                 })
-                //console.log(this.$refs.input)
             }
         }
     },

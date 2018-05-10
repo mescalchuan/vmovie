@@ -11,6 +11,7 @@
 </template>
 
 <script>
+/* 评分组件 */
 import Icon from '@/common/ui-components/Icon';
 //数字格式化预处理
 const calculate = (num) => {
