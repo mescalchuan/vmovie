@@ -10,7 +10,7 @@
             </div>
             <Icon name="ios-search-outline" color="transparent" size="25"/>
         </div>
-        <Modal v-if="modalShow" backgroundColor="white">
+        <Modal v-if="modalShow">
             <div class="search-con">
                 <div @click="closeModal">
                     <Icon name="ios-arrow-back" color="white" size="25"/>

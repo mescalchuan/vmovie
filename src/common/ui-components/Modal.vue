@@ -11,7 +11,7 @@ export default {
     props: {
         backgroundColor: {
             type: String,
-            default: 'rgba(0, 0, 0, 0.5)'
+            default: 'white'
         },
         callback: {
             type: Function,
@@ -20,11 +20,17 @@ export default {
     },
     mounted() {
         //弹层出现后禁止外部滚动
-        document.documentElement.style.overflow = 'hidden';
+        //document.documentElement.style.overflow = 'hidden';
+        this.scrollTop =document.documentElement.scrollTop || document.body.scrollTop;
+        document.body.style.position='fixed';
+        document.body.style.top=-this.scrollTop+'px';
     },
     beforeDestroy() {
         //恢复滚动
-        document.documentElement.style.overflow = 'visible';
+        //document.documentElement.style.overflow = 'visible';
+        document.body.style.position='';
+        document.body.style.top='';
+        document.body.scrollTop = document.documentElement.scrollTop = this.scrollTop;
     }
 }
 </script>

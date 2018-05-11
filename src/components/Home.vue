@@ -184,4 +184,8 @@ export default {
         position: static;
     }
 }
+
+@media screen and (max-width: 640px) and (-webkit-min-device-pixel-ratio:2) {
+    
+}
 </style>
