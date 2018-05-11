@@ -143,6 +143,10 @@ export default {
             .movie-title {
                 color: white;
                 @include font-dpr(16px);
+                @media screen and (max-width: 640px) and (-webkit-min-device-pixel-ratio:2) {
+                    font-size: 28px !important;
+                
+                }
             }
             .movie-director {
                 margin-top: px2rem(20);
@@ -154,6 +158,10 @@ export default {
                 .movie-director-name {
                     color: white;
                     @include font-dpr(13px);
+                    @media screen and (max-width: 640px) and (-webkit-min-device-pixel-ratio:2) {
+                        font-size: 24px !important;
+                    
+                    }
                     margin-left: px2rem(10);
                 }
             }
@@ -162,6 +170,10 @@ export default {
                 margin-top: px2rem(20);
                 color: white;
                 @include font-dpr(13px);
+                @media screen and (max-width: 640px) and (-webkit-min-device-pixel-ratio:2) {
+                    font-size: 24px !important;
+                
+                }
                 span {
                     white-space: pre-nowrap;
                 }
@@ -183,9 +195,5 @@ export default {
     .swiper-pagination-bullets {
         position: static;
     }
-}
-
-@media screen and (max-width: 640px) and (-webkit-min-device-pixel-ratio:2) {
-    
 }
 </style>
